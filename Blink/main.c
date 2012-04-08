@@ -2,9 +2,7 @@
  Blink an LED
  By Gabriel Fornaeus <gf@hax0r.se>
 
-
  */
-
 #include <avr/io.h>
 
 // Define functions
