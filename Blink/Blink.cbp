@@ -35,7 +35,7 @@
 			<Add option="-s" />
 			<Add option="-mmcu=atmega328p" />
 			<Add option="-Wl,-Map=$(TARGET_OUTPUT_FILE).map,--cref" />
-			<Add directory="/usr/lib32" />
+			<Add directory="/usr/avr/lib" />
 		</Linker>
 		<ExtraCommands>
 			<Add after="avr-size $(TARGET_OUTPUT_FILE)" />
