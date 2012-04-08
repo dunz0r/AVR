@@ -26,13 +26,16 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-W" />
 			<Add option="-Wall" />
 			<Add option="-mmcu=atmega328p" />
 			<Add option="-DF_CPU=16000000UL" />
 		</Compiler>
 		<Linker>
+			<Add option="-s" />
 			<Add option="-mmcu=atmega328p" />
 			<Add option="-Wl,-Map=$(TARGET_OUTPUT_FILE).map,--cref" />
+			<Add directory="/usr/lib32" />
 		</Linker>
 		<ExtraCommands>
 			<Add after="avr-size $(TARGET_OUTPUT_FILE)" />
