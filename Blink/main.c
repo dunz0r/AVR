@@ -38,6 +38,7 @@ void ioinit (void)
 
 //General short delays
 void delay_ms(uint16_t x)
+
 {
   uint8_t y, z;
   for ( ; x > 0 ; x--){
