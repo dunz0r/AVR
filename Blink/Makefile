@@ -15,7 +15,7 @@ $(PROJECT).hex: $(PROJECT).out
 $(PROJECT).out: $(SOURCES)
 	$(CC) $(CFLAGS) -I./ -o $(PROJECT).out $(SOURCES)
 
-program: $(PROJECT).hex
+upload: $(PROJECT).hex
 	avrdude -p m8 -c dragon_isp -e -U flash:w:$(PROJECT).hex
 
 clean:
