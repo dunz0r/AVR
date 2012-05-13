@@ -4,7 +4,8 @@ PROJECT=Blink
 SOURCES=main.c
 CC=avr-gcc
 OBJCOPY=avr-objcopy
-MMCU=attiny4313
+MMCU=attiny2313
+FREQUENCY=1000000
 
 CFLAGS=-mmcu=$(MMCU) -Wall
 
@@ -20,3 +21,7 @@ program: $(PROJECT).hex
 clean:
 	rm -f $(PROJECT).out
 	rm -f $(PROJECT).hex
+	rm -f $(PROJECT).trace
+
+simulate: 
+	simulavr -t $(PROJECT).trace -s -V --device $(MMCU) --file $(PROJECT).out -F $(FREQUENCY)
