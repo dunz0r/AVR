@@ -16,7 +16,7 @@ $(PROJECT).out: $(SOURCES)
 	$(CC) $(CFLAGS) -I./ -o $(PROJECT).out $(SOURCES)
 
 upload: $(PROJECT).hex
-	avrdude -p m8 -c dragon_isp -e -U flash:w:$(PROJECT).hex
+	avrdude -p t2313 -c dragon_isp -P usb -e -U flash:w:$(PROJECT).hex
 
 clean:
 	rm -f $(PROJECT).out
