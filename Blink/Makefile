@@ -1,4 +1,5 @@
 # AVR-GCC Makefile
+# By Gabriel Fornaeus <gf@hax0r.se>
 
 PROJECT=Blink
 SOURCES=main.c
