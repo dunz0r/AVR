@@ -1,3 +1,4 @@
+#define F_CPU 1600000UL /* 1Mhz internal Oscillator */
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -16,10 +17,14 @@
 #define set_input(portdir,pin) portdir &= (1<<pin)
 #define set_output(portdir,pin) portdir |= (1<<pin)
 
-/* =====================
- * Funtion prototypes
- * =====================
- */
+void delay_ms(uint16_t ms)
+{
+	while (ms)
+	{
+		_delay_ms(1);
+		ms--;
+	}
+}
 
 /* =====================
  * Main function
@@ -30,18 +35,10 @@ int main (void)
 	set_output(DDRB, 5);
 	while(1)
 	{
-		output_high(PORTB, 5);
-		_delay_ms(200);
-		_delay_ms(200);
-		_delay_ms(200);
-		_delay_ms(200);
-		_delay_ms(200);
-		output_low(PORTB, 5);
-		_delay_ms(200);
-		_delay_ms(200);
-		_delay_ms(200);
-		_delay_ms(200);
-		_delay_ms(200);
+		PORTB = 0xff;
+		delay_ms(1000);
+		PORTB = 0x00;
+		delay_ms(1000);
 	}
 
 }
