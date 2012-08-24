@@ -7,7 +7,8 @@ CC=avr-gcc
 OBJCOPY=avr-objcopy
 MMCU=atmega328p
 FREQUENCY=16000000
-CFLAGS=-mmcu=$(MMCU) -Wall -Os -c
+CFLAGS=-mmcu=$(MMCU) -DF_CPU=$(FREQUENCY) -Wall -Os -c
+FREQUENCY=16000000
 
 $(PROJECT).hex: $(PROJECT).out
 	$(OBJCOPY) -j .text -j .data -O ihex $(PROJECT).out $(PROJECT).hex
