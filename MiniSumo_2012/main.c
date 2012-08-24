@@ -17,11 +17,11 @@ int main (void)
 	{
 		
 		/* Set 3 to high */
-		set_PORTB_bit(3, 1);
+		set_PORTB_bit(5, 1);
 
 		_delay_ms(100);
 
-		set_PORTB_bit(3, 0);
+		set_PORTB_bit(5, 0);
 		
 		_delay_ms(200);
 	}

@@ -1,7 +1,7 @@
 # AVR-GCC Makefile
 # By Gabriel Fornaeus <gf@hax0r.se>
 
-PROJECT=Blink
+PROJECT=sumo
 SOURCES=main.c
 CC=avr-gcc
 OBJCOPY=avr-objcopy
