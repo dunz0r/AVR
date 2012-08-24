@@ -20,8 +20,6 @@
  * Funtion prototypes
  * =====================
  */
-void delay_ms(uint8_t ms); /* General purpose delay */
-void delay_ms2(uint16_t x);
 
 /* =====================
  * Main function
@@ -29,31 +27,21 @@ void delay_ms2(uint16_t x);
  */
 int main (void)
 {
-	/* Until the end of the world, do stuff */
-	set_output(DDRB,LED);
+	set_output(DDRB, 5);
 	while(1)
 	{
-
-		output_high(PORTB,LED);
-		delay_ms(200);
-		output_low(PORTB,LED);
-		delay_ms(200);
+		output_high(PORTB, 5);
+		_delay_ms(200);
+		_delay_ms(200);
+		_delay_ms(200);
+		_delay_ms(200);
+		_delay_ms(200);
+		output_low(PORTB, 5);
+		_delay_ms(200);
+		_delay_ms(200);
+		_delay_ms(200);
+		_delay_ms(200);
+		_delay_ms(200);
 	}
-	return 1;
-}
 
-/* =====================
- * Kills time in a calibrated manner
- * =====================
- */
-void delay_ms(uint8_t ms)
-{
-	uint16_t delay_count = F_CPU / 17500;
-
-	while (ms != 0)
-	{
-		int i = 0;
-		for (i=0; i != delay_count; i++);
-		ms--;
-	}
 }
