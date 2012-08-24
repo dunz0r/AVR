@@ -1,5 +1,5 @@
 #include <avr/io.h>
-
+#include <util/delay.h>
 
 /* =====================
  * Defines for pins
@@ -34,18 +34,9 @@ int main (void)
 	while(1)
 	{
 
-		/* Set 5 to high */
 		output_high(PORTB,LED);
 		delay_ms(200);
-		delay_ms(200);
 		output_low(PORTB,LED);
-		delay_ms(200);
-		delay_ms(200);
-		delay_ms(200);
-		delay_ms(200);
-		delay_ms(200);
-		delay_ms(200);
-		delay_ms(200);
 		delay_ms(200);
 	}
 	return 1;
@@ -64,17 +55,5 @@ void delay_ms(uint8_t ms)
 		int i = 0;
 		for (i=0; i != delay_count; i++);
 		ms--;
-	}
-}
-
-void delay_ms2(uint16_t x)
-{
-	uint8_t y, z;
-	for ( ; x > 0 ; x--){
-		for ( y = 0 ; y < 90 ; y++){
-			for ( z = 0 ; z < 6 ; z++){
-				asm volatile ("nop");
-			}
-		}
 	}
 }

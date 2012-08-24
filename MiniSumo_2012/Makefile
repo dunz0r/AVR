@@ -1,28 +1,38 @@
-# AVR-GCC Makefile
-# By Gabriel Fornaeus <gf@hax0r.se>
-
-PROJECT=sumo
-SOURCES=main.c
 CC=avr-gcc
+CFLAGS=-Wall -Os -DF_CPU=$(F_CPU) -mmcu=$(MCU)
+MCU=atmega328
+F_CPU=16000000UL
+PRG=main
+
 OBJCOPY=avr-objcopy
-MMCU=atmega328p
-FREQUENCY=16000000
-CFLAGS=-mmcu=$(MMCU) -DF_CPU=$(FREQUENCY) -Wall -Os -c
-FREQUENCY=16000000
+BIN_FORMAT=ihex
 
-$(PROJECT).hex: $(PROJECT).out
-	$(OBJCOPY) -j .text -j .data -O ihex $(PROJECT).out $(PROJECT).hex
+PORT=/dev/ttyACM0
+BAUD=115200
+PROTOCOL=stk500v1
+PART=$(MCU)
+AVRDUDE=avrdude -C /etc/avrdude.conf -F -V 
 
-$(PROJECT).out: $(SOURCES)
-	$(CC) $(CFLAGS) -I./ -o $(PROJECT).out $(SOURCES)
+RM=rm -f
 
-upload: $(PROJECT).hex
-	avrdude -F -V -p ATMEGA328P -c arduino -P /dev/ttyACM0 -b 115200 -U flash:w:$(PROJECT).hex
+.PHONY: all
+	all: $(PRG).hex
 
-clean:
-	rm -f $(PROJECT).out
-	rm -f $(PROJECT).hex
-	rm -f $(PROJECT).trace
+$(PRG).hex: $(PRG).elf
 
-simulate: 
-	simulavr -t $(PROJECT).trace -s -V --device $(MMCU) --file $(PROJECT).out -F $(FREQUENCY)
+$(PRG).elf: $(PRG).s
+
+$(PRG).s: $(PRG).c
+
+.PHONY: clean
+	clean:
+	    $(RM) $(PRG).elf $(PRG).hex $(PRG).s
+
+upload: $(PRG).hex
+	    $(AVRDUDE) -c $(PROTOCOL) -p m328p -P $(PORT) -b $(BAUD) -U flash:w:$<
+
+%.elf: %.s ; $(CC) $(CFLAGS) -s -o $@ $<
+
+%.s: %.c ; $(CC) $(CFLAGS) -S -o $@ $<
+
+%.hex: %.elf ; $(OBJCOPY) -O $(BIN_FORMAT) -R .eeprom $< $@
