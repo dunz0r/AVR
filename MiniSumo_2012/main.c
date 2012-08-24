@@ -1,48 +1,65 @@
-#define F_CPU 1600000UL /* 16Mhz crystal */
-
 #include <avr/io.h>
-#include <util/delay.h>
-#include <inttypes.h>
 
-/* Funtion prototype */
-int set_PORTB_bit(int position, int value);
 
+/* =====================
+ * Defines for pins
+ * =====================
+ */
+#define LED PB5
+
+/* =====================
+ * Macros
+ * =====================
+ */
+#define output_low(port,pin) port &= ~(1<<pin)
+#define output_high(port,pin) port |= ~(1<<pin)
+#define set_input(portdir,pin) portdir &= (1<<pin)
+#define set_output(portdir,pin) portdir |= (1<<pin)
+
+/* =====================
+ * Funtion prototypes
+ * =====================
+ */
+void delay_ms(uint8_t x); /* General purpose delay */
+
+/* =====================
+ * Main function
+ * =====================
+ */
 int main (void)
 {
-	/* Set port B 3 and 4 as outputs */
-	DDRB = 0b000011000;
-
-	// Until the end of the world, do stuff
+	/* Until the end of the world, do stuff */
+	set_output(DDRB,LED);
 	while(1)
 	{
 		
-		/* Set 3 to high */
-		set_PORTB_bit(5, 1);
+		delay_ms(200);
+		delay_ms(200);
 
-		_delay_ms(100);
+		/* Set 5 to high */
+		output_high(DDRB,LED);
 
-		set_PORTB_bit(5, 0);
-		
-		_delay_ms(200);
+		delay_ms(200);
+		delay_ms(200);
+		delay_ms(200);
+
+		output_low(DDRB,LED);
 	}
 	return 1;
 }
 
-/* Sets value at position on PORTB */
-int set_PORTB_bit(int position, int value)
+/* =====================
+ * Kills time in a calibrated manner
+ * =====================
+ */
+void delay_ms(uint8_t ms)
 {
-	/* Sets or clears the bit in position 'position'
-	 * Either 1 or 0 to match 'value'
-	 * Leaves all the other bits in PORTB unchanged.
-	 */
-	if (value == 0)
-	{
-		PORTB &= ~(1 << position); /* Set the position low */
-	}
-	else
-	{
-		PORTB |= (1 << position); /* Set high, leave others alone */
-	}
+	uint16_t delay_count = F_CPU / 17500;
 
-	return 1;
+	while (ms != 0)
+	{
+		int i = 0;
+		for (i=0; i != delay_count; i++);
+		ms--;
+	}
 }
