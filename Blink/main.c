@@ -1,4 +1,4 @@
-#define F_CPU 1600000UL /* 1Mhz internal Oscillator */
+#define F_CPU 16000000UL /* 1Mhz internal Oscillator */
 
 #include <avr/io.h>
 #include <util/delay.h>
