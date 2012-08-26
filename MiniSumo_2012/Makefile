@@ -72,8 +72,8 @@ esrec: $(PRG)_eeprom.srec
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@
  
  
-# command to program chip (invoked by running "make install")
-install:  $(PRG).hex
+# command to program chip (invoked by running "make upload")
+upload:  $(PRG).hex
 	avrdude -p $(AVRDUDE_TARGET) -c $(PROGRAMMER) -P $(PORT) -v  \
          -U flash:w:$(PRG).hex 
  

@@ -1,4 +1,3 @@
-#define F_CPU 16000000UL /* 16Mhz external crystals */
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -13,8 +12,8 @@
  * =====================
  */
 #define output_low(port,pin) port &= ~(1<<pin)
-#define output_high(port,pin) port |= ~(1<<pin)
-#define set_input(portdir,pin) portdir &= (1<<pin)
+#define output_high(port,pin) port |= (1<<pin)
+#define set_input(portdir,pin) portdir &= ~(1<<pin)
 #define set_output(portdir,pin) portdir |= (1<<pin)
 
 void delay_ms(uint16_t ms)
@@ -32,12 +31,12 @@ void delay_ms(uint16_t ms)
  */
 int main (void)
 {
-	set_output(DDRB, 5);
+	set_output(DDRB, LED);
 	while(1)
 	{
-		PORTB = 0xff;
+		output_high(PORTB, PB5);
 		delay_ms(1000);
-		PORTB = 0x00;
+		output_low(PORTB, PB5);
 		delay_ms(1000);
 	}
 
