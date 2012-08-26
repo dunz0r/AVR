@@ -1,20 +1,16 @@
+/* =====================
+ * Gabriel Fornaeus, 2012
+ * =====================
+ */
 #include <avr/io.h>
 #include <util/delay.h>
+#include "iomacros.h"
 
 /* =====================
  * Defines for pins
  * =====================
  */
-#define LED PB5
-
-/* =====================
- * Macros
- * =====================
- */
-#define output_low(port,pin) port &= ~(1<<pin)
-#define output_high(port,pin) port |= (1<<pin)
-#define set_input(portdir,pin) portdir &= ~(1<<pin)
-#define set_output(portdir,pin) portdir |= (1<<pin)
+#define LED 5,B
 
 void delay_ms(uint16_t ms)
 {
@@ -31,12 +27,12 @@ void delay_ms(uint16_t ms)
  */
 int main (void)
 {
-	set_output(DDRB, LED);
+	out(LED);
 	while(1)
 	{
-		output_high(PORTB, PB5);
+		output_high(LED);
 		delay_ms(1000);
-		output_low(PORTB, PB5);
+		output_low(LED);
 		delay_ms(1000);
 	}
 
