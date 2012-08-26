@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : Defeat everything
  * Creation Date : 26-08-2012
- * Last Modified : sön 26 aug 2012 08:20:04
+ * Last Modified : sön 26 aug 2012 17:06:21
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -17,6 +17,19 @@
  */
 #define LED 5,B
 
+volatile uint8_t count;
+
+void init_timer1(void)
+{
+	/* Set initial timer value */
+	cli();
+	TCCR1A = 0;
+	TCCR1B = 0;
+	TIMSK1 |= (1 << TOIE1); /* Enable timer overflow interrupt */
+	TCCR1B |= (1 << CS12);
+	sei();
+}
+
 /*
  * Main function
  *
@@ -24,26 +37,13 @@
 int main (void)
 {
 	set_output(LED);
-	/*
-	TCCR1B |= ( 1 << WGM12); * Configure timer 1 for CTC mode *
-	TIMSK1 |= (1 << OCIE1A); * Enable CTC interrupt *
-	OCR1A = 1562; * Set CTC compare to 1/16 *
-	sei(); * Enable global interrupts *
-	TCCR1B |= ((1 << CS10 ) | (1 << CS11)); * Start timer at Fcpu/64 *
-	*/
-	while(1)
-	{
-		toggle_output(LED);
-		_delay_ms(255);
-		_delay_ms(255);
-	}
-}
-/*
- * Interrupts
- *
- */
+	init_timer1();
 
-ISR(TIMER1_COMPA_vect)
+	/* Infinite loop */
+	for(;;);
+}
+
+ISR(TIMER1_OVF_vect)
 {
-	toggle_output(LED); /* Flip bit(toggle) LED */
+	toggle_output(LED);
 }
