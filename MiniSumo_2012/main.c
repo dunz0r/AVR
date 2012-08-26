@@ -2,13 +2,13 @@
  * File Name : main.c
  * Purpose : Defeat everything
  * Creation Date : 26-08-2012
- * Last Modified : sön 26 aug 2012 05:36:44
+ * Last Modified : sön 26 aug 2012 06:17:16
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 #include <avr/io.h>
-#include <util/delay.h>
 #include "macros.h"
+#include "delay_ms.h"
 
 /*
  * Defines for pins
@@ -17,46 +17,25 @@
 #define LED 5,B
 
 /*
- * Function prototypes
- *
- */
-void delay_ms(uint16_t ms);
-
-/*
  * Main function
  *
  */
 int main (void)
 {
-	unsigned char elapsed_seconds = 0; /* Make a new counter variable and initialize to zero */
 	set_output(LED);
-	TCCR1B |= (1 << CS10) | (1 << CS11); /* Set up timer */
+	 /* TODO Enable CTC interrupt */
+	 /* TODO Enable global interrupts */
+	TCCR1B |= ( 1 << WGM12); /* Configure timer 1 for CTC mode */
+	OCR1A = 15624; /* Set CTC compare value to 1Hz at 1MHz AVR clock with a prescaler of 64 */
+
+	TCCR1B |= ((1 << CS10 ) | (1 << CS11)); /* Start timer at Fcpu/64 */
 	while(1)
 	{
-		/* True when matching ~1 second */
-		if ( TCNT1 >= 15624 )
+		if (TIFR1 & (1 << OCF1A))
 		{
-			TCNT1 = 0; /* Reset timer */
-			elapsed_seconds++;
-			if ( elapsed_seconds == 60 )
-			{
-				elapsed_seconds = 0;
-				toggle_output(LED); /* Flip bit(toggle) LED */
-			}
+			toggle_output(LED); /* Flip bit(toggle) LED */
+
+			TIFR1 = (1 << OCF1A); /* Clear the CTC flag by writing a logic 1 to the set flag */
 		}
 	}
 }
-
-/*
- * For longer delays
- *
- */
-void delay_ms(uint16_t ms)
-{
-	while (ms)
-	{
-		_delay_ms(1);
-		ms--;
-	}
-}
-
