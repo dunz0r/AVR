@@ -1,5 +1,9 @@
 /*
- * Gabriel Fornaeus, 2012
+ * File Name : main.c
+ * Purpose :
+ * Creation Date : 26-08-2012
+ * Last Modified : sön 26 aug 2012 03:54:54
+ * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 #include <avr/io.h>
