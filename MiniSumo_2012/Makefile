@@ -8,7 +8,7 @@
 MCU = atmega328
 FORMAT = ihex
 TARGET = main
-SRC = $(TARGET).c  ./usart.c ./delay_ms.c
+SRC = $(TARGET).c  ./usart.c ./delay_ms.c ./timers.c
 ASRC = 
 OPT = s
 HZ          = 16000000

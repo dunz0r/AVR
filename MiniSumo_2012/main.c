@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : Defeat everything
  * Creation Date : 26-08-2012
- * Last Modified : sön 23 sep 2012 16:12:09
+ * Last Modified : sön 23 sep 2012 17:48:18
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -11,6 +11,7 @@
 #include "macros.h"
 #include "usart.h"
 #include "delay_ms.h"
+#include "timers.h"
 /*}}}*/
 
 /*{{{ Defines for pins*/
@@ -18,19 +19,6 @@
 #define LED2 6,D
 #define VREF 5
 #define POT 1000
-/*}}}*/
-
-/*{{{ Initliaze TIMER1*/
-void init_timer1(void)
-{
-	/* Set initial timer value */
-	cli();
-	TCCR1A = 0;
-	TCCR1B = 0;
-	TIMSK1 |= (1 << TOIE1); /* Enable timer overflow interrupt */
-	TCCR1B |= (1 << CS12); /* Prescaler at 1024 */
-	sei();
-}
 /*}}}*/
 
 /*{{{ Main function */
@@ -49,25 +37,6 @@ int main (void)
 
 	for(;;)
 	{
-		if (potval > 128) {
-			output_low(LED);
-			output_high(LED2);
-		}
-		else if(potval < 128) {
-			output_low(LED2);
-			output_high(LED);
-		}
-		// reading potentiometer value and recalculating to ohms
-		// sending potentiometer value to terminal
-		printf("Potval = %u Ohms \n", (uint16_t)potval);
-		// reading band gap voltage and recalculating to volts
-		vbg=(double)VREF/1024;
-		// Printing value to terminal
-		printf("Vbg = %4.2fV\n", vbg);
-		_delay_ms(255);
-		_delay_ms(255);
-		_delay_ms(255);
-		_delay_ms(255);
 
 	}
 
@@ -80,3 +49,4 @@ int main (void)
    toggle_output(LED);
    }
    */
+
