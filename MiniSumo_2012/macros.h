@@ -2,10 +2,15 @@
  * File Name : macros.h
  * Purpose :
  * Creation Date : 26-08-2012
- * Last Modified : sön 26 aug 2012 06:22:20
+ * Last Modified : sön 23 sep 2012 17:23:13
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
+
+/* Header guard */
+#ifndef MACRO_H
+
+#define MACRO_H
 
 /* Macro function to declare an output pin */
 #define set_output(x)			_set_output(x)
@@ -33,3 +38,5 @@
 /* Macro function to get state of input pin */
 #define read_input(x)			_read_input(x)
 #define _read_input(bit,port)	(PIN##port & (1 << bit))
+
+#endif

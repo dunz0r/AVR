@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : Defeat everything
  * Creation Date : 26-08-2012
- * Last Modified : tor 30 aug 2012 17:12:13
+ * Last Modified : sön 23 sep 2012 16:12:09
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -37,6 +37,7 @@ void init_timer1(void)
 int main (void)
 {
 	double vbg, potval;
+	potval = 2;
 	set_output(LED2);
 	set_output(LED);
 	usart0_init();
