@@ -1,11 +1,11 @@
-# Hey Emacs, this is a -*- makefile -*-
-
 # AVR-GCC Makefile template, derived from the WinAVR template (which
 # is public domain), believed to be neutral to any flavor of "make"
 # (GNU make, BSD make, SysV make)
+# Modifications by Gabriel Fornaeus, gf@hax0r.se
 
 
 MCU = atmega328
+AVR_DUDE_TARGET=m328p
 FORMAT = ihex
 TARGET = main
 SRC = $(TARGET).c  ./usart.c ./delay_ms.c ./timers.c
@@ -83,10 +83,10 @@ LDFLAGS = $(EXTMEMOPTS) $(LDMAP) $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 # Programming support using avrdude. Settings and variables.
 
-AVRDUDE_PROGRAMMER = stk500
-AVRDUDE_PORT = /dev/term/a
+AVRDUDE_PROGRAMMER = arduino
+AVRDUDE_PORT = /dev/ttyACM0
 
-AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
+AVRDUDE_WRITE_FLASH = -U flash:w:$(AVR_DUDETARGET).hex
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
 
 
@@ -104,7 +104,7 @@ AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 # to submit bug reports.
 #AVRDUDE_VERBOSE = -v -v
 
-AVRDUDE_BASIC = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
+AVRDUDE_BASIC = -p $(AVR_DUDE_TARGET) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
 AVRDUDE_FLAGS = $(AVRDUDE_BASIC) $(AVRDUDE_NO_VERIFY) $(AVRDUDE_VERBOSE) $(AVRDUDE_ERASE_COUNTER)
 
 
