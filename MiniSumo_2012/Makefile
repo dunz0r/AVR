@@ -8,10 +8,10 @@ MCU = atmega328
 AVR_DUDE_TARGET=m328p
 FORMAT = ihex
 TARGET = main
-SRC = $(TARGET).c  ./usart.c ./delay_ms.c ./timers.c
+SRC = $(TARGET).c  ./usart.c ./delay_ms.c ./timers.c ./adc.c
 ASRC = 
 OPT = s
-HZ          = 16000000
+HZ = 16000000
 
 # Name of this Makefile (used for "make depend").
 MAKEFILE = Makefile
@@ -38,7 +38,7 @@ CINCS =
 CDEBUG = -g$(DEBUG)
 CWARN = -Wall -Wstrict-prototypes
 CTUNING = -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-#CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
+CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS = $(CDEBUG) $(CDEFS) $(CINCS) -O$(OPT) $(CWARN) $(CSTANDARD) $(CEXTRA)
 
 
@@ -132,7 +132,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 # Default target.
 all: build
 
-build: elf hex eep
+build: elf hex eep size
 
 elf: $(TARGET).elf
 hex: $(TARGET).hex
@@ -167,6 +167,7 @@ extcoff: $(TARGET).elf
 .SUFFIXES: .elf .hex .eep .lss .sym
 
 .elf.hex:
+	### Creating HEX file ###
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
 
 .elf.eep:
@@ -185,6 +186,7 @@ extcoff: $(TARGET).elf
 
 # Link: create ELF output file from object files.
 $(TARGET).elf: $(OBJ)
+	### Building ELF file ###
 	$(CC) $(ALL_CFLAGS) $(OBJ) --output $@ $(LDFLAGS)
 
 
@@ -209,6 +211,11 @@ clean:
 	$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
 	$(TARGET).map $(TARGET).sym $(TARGET).lss \
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)
+
+# Shows: size of the binary produced
+size:
+	### Size of file ###
+	avr-size $(TARGET).o
 
 depend:
 	if grep '^# DO NOT DELETE' $(MAKEFILE) >/dev/null; \

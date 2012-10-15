@@ -2,7 +2,7 @@
  * File Name : delay_ms.h
  * Purpose : Longer delays
  * Creation Date : 26-08-2012
- * Last Modified : sön 23 sep 2012 17:24:05
+ * Last Modified : mån 15 okt 2012 01:58:49
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -14,5 +14,5 @@
 
 #include <util/delay.h>
 #include <stdint.h>
-void delay_ms(uint8_t ms);
+void delay_ms(uint16_t ms);
 #endif
