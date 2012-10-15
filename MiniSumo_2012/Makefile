@@ -132,7 +132,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 # Default target.
 all: build
 
-build: elf hex eep size
+build: elf hex eep
 
 elf: $(TARGET).elf
 hex: $(TARGET).hex
@@ -167,7 +167,6 @@ extcoff: $(TARGET).elf
 .SUFFIXES: .elf .hex .eep .lss .sym
 
 .elf.hex:
-	### Creating HEX file ###
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
 
 .elf.eep:
@@ -186,7 +185,6 @@ extcoff: $(TARGET).elf
 
 # Link: create ELF output file from object files.
 $(TARGET).elf: $(OBJ)
-	### Building ELF file ###
 	$(CC) $(ALL_CFLAGS) $(OBJ) --output $@ $(LDFLAGS)
 
 
@@ -211,11 +209,6 @@ clean:
 	$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
 	$(TARGET).map $(TARGET).sym $(TARGET).lss \
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)
-
-# Shows: size of the binary produced
-size:
-	### Size of file ###
-	avr-size $(TARGET).o
 
 depend:
 	if grep '^# DO NOT DELETE' $(MAKEFILE) >/dev/null; \
