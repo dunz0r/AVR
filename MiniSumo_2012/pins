@@ -1,0 +1,7 @@
+Enable_a PD6 == digital 6
+Input1 PB0 == digital 8
+Input2 PD7 == digital 7
+
+Enable_b PD5 == digital 5
+Input3 PB3 == digital 11
+Input4 PD4 == digital 4
