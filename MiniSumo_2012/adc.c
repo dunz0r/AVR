@@ -2,7 +2,7 @@
  * File Name : adc.c
  * Purpose : Init ADC and read ADC
  * Creation Date : 15-10-2012
- * Last Modified : sön 28 okt 2012 15:07:21
+ * Last Modified : tis  1 jan 2013 21:34:34
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -33,7 +33,7 @@ void init_adc(void)
 
 // Interrupt that save the converted value to the array of values
 // and starts a new conversion
-int ISR(ADC_vect)
+ISR(ADC_vect)
 {
 	adc_value[ad_count]=ADCH;
 

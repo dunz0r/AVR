@@ -2,12 +2,13 @@
  * File Name : main.c
  * Purpose : Defeat everything
  * Creation Date : 26-08-2012
- * Last Modified : mån 15 okt 2012 02:10:18
+ * Last Modified : tis  1 jan 2013 21:56:00
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 /*{{{ Includes */
 #include <avr/interrupt.h>
+#include <avr/io.h>
 #include "adc.h"
 #include "delay_ms.h"
 #include "macros.h"

@@ -15,12 +15,11 @@ void delay_ms(uint16_t ms)
 
 int main (void)
 {
-	/* PA0 is digital output */
 	DDRB = 0xff;
 	asm("NOP");
 
 	/* Loop forever */
-	while (1)
+	for(;;)
 	{
 		PORTB = 0xff;
 		asm("NOP");

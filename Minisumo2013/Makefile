@@ -8,7 +8,7 @@ MCU = atmega328
 AVR_DUDE_TARGET=m328p
 FORMAT = ihex
 TARGET = main
-SRC = $(TARGET).c  ./usart.c ./delay_ms.c ./timers.c ./adc.c
+SRC = $(TARGET).c  ./usart.c ./adc.c ./utils.c ./motors.c
 ASRC = 
 OPT = s
 HZ = 16000000
@@ -36,7 +36,7 @@ CINCS =
 
 
 CDEBUG = -g$(DEBUG)
-CWARN = -Wall -Wstrict-prototypes
+CWARN = -Wall -Wstrict-prototypes -pedantic
 CTUNING = -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS = $(CDEBUG) $(CDEFS) $(CINCS) -O$(OPT) $(CWARN) $(CSTANDARD) $(CEXTRA)
@@ -84,9 +84,9 @@ LDFLAGS = $(EXTMEMOPTS) $(LDMAP) $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 # Programming support using avrdude. Settings and variables.
 
 AVRDUDE_PROGRAMMER = arduino
-AVRDUDE_PORT = /dev/ttyACM0
+AVRDUDE_PORT = /dev/ttyUSB0
 
-AVRDUDE_WRITE_FLASH = -U flash:w:$(AVR_DUDETARGET).hex
+AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
 
 
@@ -143,6 +143,7 @@ sym: $(TARGET).sym
 
 # Program the device.  
 program: $(TARGET).hex $(TARGET).eep
+	@echo Programming $(MCU) at $(AVRDUDE_PORT)
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
 
@@ -167,15 +168,19 @@ extcoff: $(TARGET).elf
 .SUFFIXES: .elf .hex .eep .lss .sym
 
 .elf.hex:
-	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
+	@echo Creating hex
+	@$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
+	@echo Size of HEX-file
+	@$(SIZE) $@
 
 .elf.eep:
-	-$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom="alloc,load" \
+	@echo Creating eeprom
+	@$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom="alloc,load" \
 	--change-section-lma .eeprom=0 -O $(FORMAT) $< $@
 
 # Create extended listing file from ELF output file.
 .elf.lss:
-	$(OBJDUMP) -h -S $< > $@
+	@$(OBJDUMP) -h -S $< > $@
 
 # Create a symbol table from ELF output file.
 .elf.sym:
@@ -185,17 +190,20 @@ extcoff: $(TARGET).elf
 
 # Link: create ELF output file from object files.
 $(TARGET).elf: $(OBJ)
+	@echo Compiling elf
 	$(CC) $(ALL_CFLAGS) $(OBJ) --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 .c.o:
-	$(CC) -c $(ALL_CFLAGS) $< -o $@ 
+	@echo Creating object files for $@
+	@$(CC) -c $(ALL_CFLAGS) $< -o $@ 
 
 
 # Compile: create assembler files from C source files.
 .c.s:
-	$(CC) -S $(ALL_CFLAGS) $< -o $@
+	@echo Creating asm for $@
+	@$(CC) -S $(ALL_CFLAGS) $< -o $@
 
 
 # Assemble: create object files from assembler source files.
@@ -206,9 +214,10 @@ $(TARGET).elf: $(OBJ)
 
 # Target: clean project.
 clean:
-	$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
-	$(TARGET).map $(TARGET).sym $(TARGET).lss \
-	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)
+	@echo cleaning
+	@$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
+	@$(TARGET).map $(TARGET).sym $(TARGET).lss \
+	@$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)
 
 depend:
 	if grep '^# DO NOT DELETE' $(MAKEFILE) >/dev/null; \
@@ -222,5 +231,3 @@ depend:
 	$(CC) -M -mmcu=$(MCU) $(CDEFS) $(CINCS) $(SRC) $(ASRC) >> $(MAKEFILE)
 
 .PHONY:	all build elf hex eep lss sym program coff extcoff clean depend
-
-

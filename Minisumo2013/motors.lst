@@ -1,0 +1,258 @@
+   1               		.file	"motors.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  72               	.global	init_motors
+  74               	init_motors:
+   1:motors.c      **** /*
+   2:motors.c      ****  * File Name : motors.c
+   3:motors.c      ****  * Purpose : Control of motors via an L298N H-bridge
+   4:motors.c      ****  * Creation Date : 2013-01-16
+   5:motors.c      ****  * Last Modified : Thu 17 Jan 2013 08:40:51 CET
+   6:motors.c      ****  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
+   7:motors.c      ****  *
+   8:motors.c      ****  */
+   9:motors.c      **** 
+  10:motors.c      **** #include "motors.h"
+  11:motors.c      **** 
+  12:motors.c      **** /*{{{ Set heading based on difference between motors and desired speed */
+  13:motors.c      **** void set_heading(int16_t speed, uint16_t difference) {
+  14:motors.c      **** 	// Set heading, left = speed + diff, right = speed - diff
+  15:motors.c      **** 	int left = speed + difference;
+  16:motors.c      **** 	left = constrain(255,-255,left);
+  17:motors.c      **** 	int right = speed - difference;
+  18:motors.c      **** 	right = constrain(255,-255,right);
+  19:motors.c      **** 	set_motors(left,right);
+  20:motors.c      **** }
+  21:motors.c      **** /*}}}*/
+  22:motors.c      **** 
+  23:motors.c      **** /*{{{ Initialize motor inputs and outputs */
+  24:motors.c      **** void init_motors(void) {
+  76               	.LM0:
+  77               	.LFBB1:
+  78               	/* prologue: function */
+  79               	/* frame size = 0 */
+  80               	/* stack size = 0 */
+  81               	.L__stack_usage = 0
+  25:motors.c      **** 	
+  26:motors.c      **** 	// Set up DIR bits and enable PWM to output
+  27:motors.c      **** 	set_output(INPUT_1);
+  83               	.LM1:
+  84 0000 209A      		sbi 0x4,0
+  28:motors.c      **** 	set_output(INPUT_2);
+  86               	.LM2:
+  87 0002 579A      		sbi 0xa,7
+  29:motors.c      **** 	set_output(INPUT_3);
+  89               	.LM3:
+  90 0004 239A      		sbi 0x4,3
+  30:motors.c      **** 	set_output(INPUT_4);
+  92               	.LM4:
+  93 0006 549A      		sbi 0xa,4
+  31:motors.c      **** 
+  32:motors.c      **** 	// Clear OC0A and OC0B om compare match
+  33:motors.c      **** 	TCCR0A |= (1 << COM0A1);
+  95               	.LM5:
+  96 0008 84B5      		in r24,0x24
+  97 000a 8068      		ori r24,lo8(-128)
+  98 000c 84BD      		out 0x24,r24
+  34:motors.c      **** 	TCCR0A |= (1 << COM0B1);
+ 100               	.LM6:
+ 101 000e 84B5      		in r24,0x24
+ 102 0010 8062      		ori r24,lo8(32)
+ 103 0012 84BD      		out 0x24,r24
+  35:motors.c      **** 
+  36:motors.c      **** 	// Fast PWM
+  37:motors.c      **** 	TCCR0A |= (1 << WGM00);
+ 105               	.LM7:
+ 106 0014 84B5      		in r24,0x24
+ 107 0016 8160      		ori r24,lo8(1)
+ 108 0018 84BD      		out 0x24,r24
+  38:motors.c      **** 
+  39:motors.c      **** 	// Prescaler att 64
+  40:motors.c      **** 	TCCR0B |= (1 << CS01);
+ 110               	.LM8:
+ 111 001a 85B5      		in r24,0x25
+ 112 001c 8260      		ori r24,lo8(2)
+ 113 001e 85BD      		out 0x25,r24
+ 114 0020 0895      		ret
+ 116               	.Lscope1:
+ 120               	.global	set_motors
+ 122               	set_motors:
+  41:motors.c      **** }
+  42:motors.c      **** /*}}}*/
+  43:motors.c      **** 
+  44:motors.c      **** /*{{{ Control left and right motor speeds, stop if 0 */
+  45:motors.c      **** void set_motors(int16_t left_motor, int16_t right_motor) {
+ 124               	.LM9:
+ 125               	.LFBB2:
+ 126               	/* prologue: function */
+ 127               	/* frame size = 0 */
+ 128               	/* stack size = 0 */
+ 129               	.L__stack_usage = 0
+  46:motors.c      **** 	// Set motor speeds
+  47:motors.c      **** 	// Forward
+  48:motors.c      **** 	if(left_motor > 0) {
+ 131               	.LM10:
+ 132 0022 1816      		cp __zero_reg__,r24
+ 133 0024 1906      		cpc __zero_reg__,r25
+ 134 0026 04F4      		brge .L3
+  49:motors.c      **** 		// Set INPUT1, INPUT2 for reverse
+  50:motors.c      **** 		output_low(INPUT_1);
+ 136               	.LM11:
+ 137 0028 2898      		cbi 0x5,0
+  51:motors.c      **** 		output_high(INPUT_2);
+ 139               	.LM12:
+ 140 002a 5F9A      		sbi 0xb,7
+ 141 002c 00C0      		rjmp .L9
+ 142               	.L3:
+  52:motors.c      **** 		ENABLE_A = left_motor;
+  53:motors.c      **** 	}
+  54:motors.c      **** 	// Reverse
+  55:motors.c      **** 	if(left_motor < 0) {
+ 144               	.LM13:
+ 145 002e 0097      		sbiw r24,0
+ 146 0030 01F0      		breq .L5
+  56:motors.c      **** 		// Set INPUT1, INPUT2 for forward
+  57:motors.c      **** 		output_high(INPUT_1);
+ 148               	.LM14:
+ 149 0032 289A      		sbi 0x5,0
+  58:motors.c      **** 		output_low(INPUT_2);
+ 151               	.LM15:
+ 152 0034 5F98      		cbi 0xb,7
+ 153               	.L9:
+  59:motors.c      **** 		ENABLE_A = left_motor;
+ 155               	.LM16:
+ 156 0036 87BD      		out 0x27,r24
+ 157 0038 00C0      		rjmp .L4
+ 158               	.L5:
+  60:motors.c      **** 	} else if(left_motor == 0) { // Stop
+  61:motors.c      **** 		output_low(INPUT_1);
+ 160               	.LM17:
+ 161 003a 2898      		cbi 0x5,0
+  62:motors.c      **** 		output_low(INPUT_2);
+ 163               	.LM18:
+ 164 003c 5F98      		cbi 0xb,7
+ 165               	.L4:
+  63:motors.c      **** 	}
+  64:motors.c      **** 	
+  65:motors.c      **** 	// Forward
+  66:motors.c      **** 	if(right_motor > 0) {
+ 167               	.LM19:
+ 168 003e 1616      		cp __zero_reg__,r22
+ 169 0040 1706      		cpc __zero_reg__,r23
+ 170 0042 04F4      		brge .L6
+  67:motors.c      **** 		// Set INPUT1, INPUT2 for reverse
+  68:motors.c      **** 		output_low(INPUT_3);
+ 172               	.LM20:
+ 173 0044 2B98      		cbi 0x5,3
+  69:motors.c      **** 		output_high(INPUT_4);
+ 175               	.LM21:
+ 176 0046 5C9A      		sbi 0xb,4
+ 177 0048 0895      		ret
+ 178               	.L6:
+  70:motors.c      **** 	}
+  71:motors.c      **** 	// Reverse
+  72:motors.c      **** 	if(right_motor < 0) {
+ 180               	.LM22:
+ 181 004a 6115      		cp r22,__zero_reg__
+ 182 004c 7105      		cpc r23,__zero_reg__
+ 183 004e 01F0      		breq .L8
+  73:motors.c      **** 		// Set INPUT1, INPUT2 for forward
+  74:motors.c      **** 		output_high(INPUT_3);
+ 185               	.LM23:
+ 186 0050 2B9A      		sbi 0x5,3
+  75:motors.c      **** 		output_low(INPUT_4);
+ 188               	.LM24:
+ 189 0052 5C98      		cbi 0xb,4
+  76:motors.c      **** 		ENABLE_B = right_motor;
+ 191               	.LM25:
+ 192 0054 68BD      		out 0x28,r22
+ 193 0056 0895      		ret
+ 194               	.L8:
+  77:motors.c      **** 	} else if(right_motor == 0) { // Stop
+  78:motors.c      **** 		output_low(INPUT_3);
+ 196               	.LM26:
+ 197 0058 2B98      		cbi 0x5,3
+  79:motors.c      **** 		output_low(INPUT_4);
+ 199               	.LM27:
+ 200 005a 5C98      		cbi 0xb,4
+ 201 005c 0895      		ret
+ 203               	.Lscope2:
+ 206               	.global	set_heading
+ 208               	set_heading:
+  13:motors.c      **** void set_heading(int16_t speed, uint16_t difference) {
+ 210               	.LM28:
+ 211               	.LFBB3:
+ 212 005e EF92      		push r14
+ 213 0060 FF92      		push r15
+ 214 0062 0F93      		push r16
+ 215 0064 1F93      		push r17
+ 216 0066 CF93      		push r28
+ 217 0068 DF93      		push r29
+ 218               	/* prologue: function */
+ 219               	/* frame size = 0 */
+ 220               	/* stack size = 6 */
+ 221               	.L__stack_usage = 6
+ 222 006a 8B01      		movw r16,r22
+  15:motors.c      **** 	int left = speed + difference;
+ 224               	.LM29:
+ 225 006c EC01      		movw r28,r24
+ 226 006e AB01      		movw r20,r22
+ 227 0070 480F      		add r20,r24
+ 228 0072 591F      		adc r21,r25
+  16:motors.c      **** 	left = constrain(255,-255,left);
+ 230               	.LM30:
+ 231 0074 61E0      		ldi r22,lo8(1)
+ 232 0076 7FEF      		ldi r23,lo8(-1)
+ 233 0078 8FEF      		ldi r24,lo8(-1)
+ 234 007a 90E0      		ldi r25,0
+ 235 007c 0E94 0000 		call constrain
+ 236 0080 7C01      		movw r14,r24
+  17:motors.c      **** 	int right = speed - difference;
+ 238               	.LM31:
+ 239 0082 AE01      		movw r20,r28
+ 240 0084 401B      		sub r20,r16
+ 241 0086 510B      		sbc r21,r17
+  18:motors.c      **** 	right = constrain(255,-255,right);
+ 243               	.LM32:
+ 244 0088 61E0      		ldi r22,lo8(1)
+ 245 008a 7FEF      		ldi r23,lo8(-1)
+ 246 008c 8FEF      		ldi r24,lo8(-1)
+ 247 008e 90E0      		ldi r25,0
+ 248 0090 0E94 0000 		call constrain
+  19:motors.c      **** 	set_motors(left,right);
+ 250               	.LM33:
+ 251 0094 BC01      		movw r22,r24
+ 252 0096 C701      		movw r24,r14
+ 253               	/* epilogue start */
+  20:motors.c      **** }
+ 255               	.LM34:
+ 256 0098 DF91      		pop r29
+ 257 009a CF91      		pop r28
+ 258 009c 1F91      		pop r17
+ 259 009e 0F91      		pop r16
+ 260 00a0 FF90      		pop r15
+ 261 00a2 EF90      		pop r14
+  19:motors.c      **** 	set_motors(left,right);
+ 263               	.LM35:
+ 264 00a4 0C94 0000 		jmp set_motors
+ 266               	.Lscope3:
+ 268               	.Letext0:
+ 269               		.ident	"GCC: (GNU) 4.7.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 motors.c
+     /tmp/ccAMwGI4.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccAMwGI4.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccAMwGI4.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccAMwGI4.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccAMwGI4.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccAMwGI4.s:74     .text:00000000 init_motors
+     /tmp/ccAMwGI4.s:122    .text:00000022 set_motors
+     /tmp/ccAMwGI4.s:208    .text:0000005e set_heading
+
+UNDEFINED SYMBOLS
+constrain
