@@ -214,7 +214,7 @@ $(TARGET).elf: $(OBJ)
 
 # Target: clean project.
 clean:
-	@echo cleaning
+	@echo Cleaning
 	@$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
 	@$(TARGET).map $(TARGET).sym $(TARGET).lss \
 	@$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)

@@ -2,7 +2,7 @@
  * File Name : adc.h
  * Purpose : Header for the adc stuff
  * Creation Date : 2013-01-08
- * Last Modified : Wed 16 Jan 2013 03:46:34 CET
+ * Last Modified : Tue 22 Jan 2013 21:11:20 CET
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -11,7 +11,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 // The number of ADC channels we have
-#define NR_AD_CHANNEL 3
+#define NR_AD_CHANNEL 2
 
 // ad_value is an array that contains all the ad values
 volatile unsigned char ad_value[NR_AD_CHANNEL];
