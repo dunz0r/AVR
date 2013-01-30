@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : ons 30 jan 2013 19:43:34
+ * Last Modified : ons 30 jan 2013 19:44:15
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -28,7 +28,7 @@ FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
 int main(void) {
 	init_adc();
 	init_usart();
-	//init_motors();
+	init_motors();
 	// Assign our stream to standard I/O streams
 	stdout=&usart0_str;
 
