@@ -2,7 +2,7 @@
  * File Name : motors.h
  * Purpose : Control of a motor via an L298N H-bridge
  * Creation Date : 2013-01-16
- * Last Modified : Thu 17 Jan 2013 08:39:17 CET
+ * Last Modified : ons 30 jan 2013 19:46:28
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -14,7 +14,6 @@
 #include <avr/io.h>
 #include "utils.h"
 #include "macros.h"
-#include <math.h>
 
 /* {{{ Pins */
 
