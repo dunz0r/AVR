@@ -2,7 +2,7 @@
  * File Name : adc.c
  * Purpose : Provice adc reading functions
  * Creation Date : 2013-01-08
- * Last Modified : ons  6 feb 2013 14:45:33
+ * Last Modified : sön 10 feb 2013 22:40:01
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -10,7 +10,7 @@
 
 #include "adc.h"
 // ad_value is an array that contains all the ad values
-volatile unsigned char ad_value[NR_AD_CHANNEL];
+volatile uint16_t ad_value[NR_AD_CHANNEL];
 // Local values
 volatile unsigned char ad_count=0;
 
