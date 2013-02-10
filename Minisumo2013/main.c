@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : sön 10 feb 2013 22:41:29
+ * Last Modified : sön 10 feb 2013 22:46:21
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -48,5 +48,7 @@ int main(void) {
 			set_heading(0,-255);
 			_delay_ms(200);
 		}
+		set_heading(90,0);
+		_delay_ms(500);
 	}
 }
