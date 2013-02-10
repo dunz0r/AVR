@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : sön 10 feb 2013 23:18:18
+ * Last Modified : sön 10 feb 2013 23:20:53
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -41,20 +41,20 @@ int main(void) {
 
 	for(;;) {
 		printf("0: %i 1: %i\n", ad_value[0], ad_value[1]);
-		if(ad_value[0] > 350 || ad_value[1] > 350 ){
+		if(ad_value[0] > ATT_THRESH || ad_value[1] > ATT_THRESH ){
 			set_heading(255,0);
 			_delay_ms(100);
 		}
 		if(ad_value[1] > (ad_value[0] + 20)) {
-			set_heading(200,100);
+			set_heading(FULL_SPEED,100);
 			_delay_ms(100);
 		}
 		else if(ad_value[0] > (ad_value[1] +20)) {
-			set_heading(200,-100);
+			set_heading(FULL_SPEED,-100);
 			_delay_ms(100);
 		}
 		else {
-			set_heading(100,40);
+			set_heading(BASE_SPEED,40);
 			_delay_ms(200);
 		}
 	}
