@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : sön 10 feb 2013 22:46:21
+ * Last Modified : sön 10 feb 2013 23:18:18
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -23,6 +23,8 @@
 #include "utils.h"
 #include "macros.h"
 
+#include "defines.h"
+
 // Set stream pointer
 FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
 
@@ -39,16 +41,21 @@ int main(void) {
 
 	for(;;) {
 		printf("0: %i 1: %i\n", ad_value[0], ad_value[1]);
-		if(ad_value[0] > 400){
-			set_heading(0,255);
+		if(ad_value[0] > 350 || ad_value[1] > 350 ){
+			set_heading(255,0);
+			_delay_ms(100);
+		}
+		if(ad_value[1] > (ad_value[0] + 20)) {
+			set_heading(200,100);
+			_delay_ms(100);
+		}
+		else if(ad_value[0] > (ad_value[1] +20)) {
+			set_heading(200,-100);
+			_delay_ms(100);
+		}
+		else {
+			set_heading(100,40);
 			_delay_ms(200);
 		}
-
-		else if(ad_value[1] > 400) {
-			set_heading(0,-255);
-			_delay_ms(200);
-		}
-		set_heading(90,0);
-		_delay_ms(500);
 	}
 }
