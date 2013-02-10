@@ -2,7 +2,7 @@
  * File Name : adc.c
  * Purpose : Provice adc reading functions
  * Creation Date : 2013-01-08
- * Last Modified : sön 10 feb 2013 22:40:01
+ * Last Modified : sön 10 feb 2013 22:42:21
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
