@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : sön 10 feb 2013 23:20:53
+ * Last Modified : Mon 11 Feb 2013 15:28:29 CET
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -46,11 +46,11 @@ int main(void) {
 			_delay_ms(100);
 		}
 		if(ad_value[1] > (ad_value[0] + 20)) {
-			set_heading(FULL_SPEED,100);
+			set_heading(FULL_SPEED,((ad_value[0] + ad_value[1]) + 100);
 			_delay_ms(100);
 		}
 		else if(ad_value[0] > (ad_value[1] +20)) {
-			set_heading(FULL_SPEED,-100);
+			set_heading(FULL_SPEED,-((ad_value[0] + ad_value[1]) + 100);
 			_delay_ms(100);
 		}
 		else {
