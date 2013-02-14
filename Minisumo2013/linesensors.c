@@ -2,7 +2,7 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : sön 10 feb 2013 22:40:46
+ * Last Modified : tor 14 feb 2013 12:19:55
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -31,7 +31,7 @@ ISR (INT0_vect) {
 	_delay_ms(1);
 	if(!(PIND & (1 << PD2))){
 		set_heading(0,90);
-		_delay_ms(200);
+		_delay_ms(100);
 	}
 }
 
@@ -39,6 +39,6 @@ ISR (INT1_vect) {
 	_delay_ms(1);
 	if(!(PIND & (1 << PD3))){
 		set_heading(0,-90);
-		_delay_ms(200);
+		_delay_ms(100);
 	}
 }
