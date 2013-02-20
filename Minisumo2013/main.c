@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : ons 20 feb 2013 18:35:17
+ * Last Modified : ons 20 feb 2013 18:37:08
 =======
- * Last Modified : ons 20 feb 2013 18:35:17
+ * Last Modified : ons 20 feb 2013 18:37:08
 >>>>>>> 7bba52c3ef81a39893ce5df0da030eaa58a8f217
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -134,6 +134,10 @@ int main(void) {
 				_delay_ms(500);
 				break;
 			case 7:
+				printf("Hunt far both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+				_delay_ms(500);
+				break;
+			case 8:
 				printf("Search\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				_delay_ms(500);
 				break;
