@@ -2,15 +2,14 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : Fri 15 Feb 2013 03:18:07 CET
+ * Last Modified : Sun 17 Feb 2013 16:50:49 CET
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 
-#include <avr/io.h>
 #include <util/delay.h>
+#include <avr/io.h>
 #include <avr/interrupt.h>
-
 // USART
 #include "usart.h"
 // ADC with interrupts
@@ -75,8 +74,10 @@ void attack(void) {
 	printf("Attack\n");
 }
 
+
 int main(void) {
-	init_adc();
+
+    init_adc();
 	init_usart();
 	init_motors();
 	init_linesensors();
