@@ -2,7 +2,7 @@
  * File Name : constrain.c
  * Purpose : Various utilities
  * Creation Date : 2013-01-16
- * Last Modified : tor 21 feb 2013 05:42:35
+ * Last Modified : tor 21 feb 2013 05:44:30
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -20,7 +20,7 @@ int16_t constrain(int16_t high, int16_t  low, int16_t  value) {
 /*{{{ Returns true if a value is within range */
 char is_within_range(int16_t high, int16_t  low, int16_t  value) {
 	char output;
-	if(value > low && value < high) output = 1;
+	if(value >= low && value <= high) output = 1;
 	else output = 0;
 	return output;
 }
