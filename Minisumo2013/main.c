@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 21 feb 2013 05:28:28
+ * Last Modified : tor 21 feb 2013 05:42:30
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -33,22 +33,22 @@ uint8_t find_state(void) {
 	if(is_within_range(700, ATT_THRESH, ad_value[0]) || is_within_range(700, ATT_THRESH, ad_value[1]))
 		state = 1;
 	// Left sensor is above NEAR_THRESH and right is below
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
+	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) && !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
 		state = 2;
 	// Right sensor is above NEAR_THRESH and left is below
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]) && !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]))
+	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]) && !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]))
 		state = 3;
 	// Both sensors are above NEAR_THRESH
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
+	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) && is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
 		state = 4;
 	// Left sensor is above FAR_THRESH and right sensor is below
-	else if(is_within_range(FAR_THRESH, 0, ad_value[0]) && !is_within_range(FAR_THRESH, 0, ad_value[1]))
+	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
 		state = 5;
 	// Right sensor is above FAR_THRESH and left sensor is below
-	else if(is_within_range(FAR_THRESH, 0, ad_value[1]) && !is_within_range(FAR_THRESH, 0, ad_value[0]))
+	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]) && !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]))
 		state = 6;
 	// Both sensors are above FAR_THRESH
-	else if(is_within_range(FAR_THRESH, 0, ad_value[0]) && is_within_range(FAR_THRESH, 0, ad_value[1]))
+	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
 		state = 7;
 	// None of the sensors are above any threshhold
 	else
