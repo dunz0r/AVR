@@ -2,11 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
-<<<<<<< HEAD
- * Last Modified : ons 20 feb 2013 18:37:08
-=======
- * Last Modified : ons 20 feb 2013 18:37:08
->>>>>>> 7bba52c3ef81a39893ce5df0da030eaa58a8f217
+ * Last Modified : tor 21 feb 2013 05:14:29
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
