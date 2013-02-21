@@ -1,8 +1,8 @@
 /*
- * File Name : constrain.c
+ * File Name : utils.c
  * Purpose : Various utilities
  * Creation Date : 2013-01-16
- * Last Modified : tor 21 feb 2013 05:44:30
+ * Last Modified : tor 21 feb 2013 05:47:36
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
