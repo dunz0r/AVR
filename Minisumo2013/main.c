@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : mån 25 feb 2013 22:29:27
+ * Last Modified : mån 25 feb 2013 22:39:19
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -61,44 +61,44 @@ uint8_t find_state(void) {
 void search(void) {
 	//set_heading(BASE_SPEED, 30);
 	set_motors(0,0);
-	_delay_ms(200);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_both(void) {
 	set_heading(BASE_SPEED, 0);
-	_delay_ms(200);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_left(void) {
-	set_heading(BASE_SPEED, -120);
-	_delay_ms(200);
+	set_heading(BASE_SPEED, -20);
+	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(BASE_SPEED, 120);
-	_delay_ms(200);
+	set_heading(BASE_SPEED, 20);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_left(void) {
-	set_heading(LOW_SPEED, -250);
-	_delay_ms(200);
+	set_heading(FULL_SPEED, -220);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_right(void) {
-	set_heading(LOW_SPEED, 250);
-	_delay_ms(200);
+	set_heading(FULL_SPEED, 220);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_both(void) {
 	set_heading(FULL_SPEED, 0);
-	_delay_ms(200);
+	_delay_ms(STATE_DELAY);
 }
 
 
 void attack(void) {
 	set_heading(FULL_SPEED, 0);
-	_delay_ms(200);
+	_delay_ms(STATE_DELAY);
 }
 /*}}}*/
 
