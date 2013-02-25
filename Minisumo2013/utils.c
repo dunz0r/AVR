@@ -2,7 +2,7 @@
  * File Name : utils.c
  * Purpose : Various utilities
  * Creation Date : 2013-01-16
- * Last Modified : mån 25 feb 2013 22:18:55
+ * Last Modified : mån 25 feb 2013 22:26:51
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -23,12 +23,5 @@ char is_within_range(int16_t high, int16_t  low, int16_t  value) {
 	if(value >= low && value <= high) output = 1;
 	else output = 0;
 	return output;
-}
-/*}}}*/
-
-/*{{{ convert a value from millimeters to "sharp" */
-uint16_t sharp_to_mm(uint16_t sharp){
-	uint16_t millimeters = ( 2914 / (sharp + 5))-1;
-	return millimeters;
 }
 /*}}}*/
