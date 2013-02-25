@@ -2,11 +2,7 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
-<<<<<<< HEAD
- * Last Modified : ons 20 feb 2013 17:43:43
-=======
- * Last Modified : ons 20 feb 2013 17:43:43
->>>>>>> 7bba52c3ef81a39893ce5df0da030eaa58a8f217
+ * Last Modified : tor 21 feb 2013 05:14:07
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
