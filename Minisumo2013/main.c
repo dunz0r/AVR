@@ -2,15 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Last Modified : ons 20 feb 2013 19:17:55
-=======
- * Last Modified : ons 20 feb 2013 19:17:55
->>>>>>> 7bba52c3ef81a39893ce5df0da030eaa58a8f217
-=======
- * Last Modified : tor 21 feb 2013 05:42:30
->>>>>>> e421e709ac3368cbb06582ffc8c92fe68b94abaf
+ * Last Modified : mån 25 feb 2013 14:34:59
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -41,27 +33,6 @@ uint8_t find_state(void) {
 	if(is_within_range(700, ATT_THRESH, ad_value[0]) || is_within_range(700, ATT_THRESH, ad_value[1]))
 		state = 1;
 	// Left sensor is above NEAR_THRESH and right is below
-<<<<<<< HEAD
-	else if(ad_value[0] > NEAR_THRESH && ad_value[1] < NEAR_THRESH)
-		state = 2;
-	// Right sensor is above NEAR_THRESH and left is below
-	else if(ad_value[1] > NEAR_THRESH && ad_value[0] < NEAR_THRESH)
-		state = 3;
-	// Both sensors are above NEAR_THRESH
-	else if(ad_value[1] > NEAR_THRESH && ad_value[0] > NEAR_THRESH)
-		state = 4;
-	// Left sensor is above FAR_THRESH and right sensor is below
-	else if(ad_value[0] > FAR_THRESH && ad_value[1] < FAR_THRESH)
-		state = 5;
-	// Right sensor is above FAR_THRESH and left sensor is below
-	else if(ad_value[1] > FAR_THRESH && ad_value[0] < FAR_THRESH)
-		state = 6;
-	// Both sensors are above FAR_THRESH
-	else if(ad_value[1] > FAR_THRESH && ad_value[0] > FAR_THRESH)
-		state = 7;
-	// None of the sensors are above any threshhold
-	else if(ad_value[0] < FAR_THRESH && ad_value[1] < FAR_THRESH)
-=======
 	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) && !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
 		state = 2;
 	// Right sensor is above NEAR_THRESH and left is below
@@ -81,7 +52,6 @@ uint8_t find_state(void) {
 		state = 7;
 	// None of the sensors are above any threshhold
 	else
->>>>>>> e421e709ac3368cbb06582ffc8c92fe68b94abaf
 		state = 8;
 	return state;
 }
