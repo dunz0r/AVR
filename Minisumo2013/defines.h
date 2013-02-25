@@ -2,7 +2,7 @@
  * File Name : defines.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : mån 25 feb 2013 23:01:02
+ * Last Modified : tis 26 feb 2013 00:27:48
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -19,7 +19,7 @@
 
 // Speeds
 #define BASE_SPEED 120
-#define FULL_SPEED 200
+#define FULL_SPEED 160
 #define LOW_SPEED 80
 
 // Times

@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : mån 25 feb 2013 22:39:19
+ * Last Modified : tis 26 feb 2013 00:29:39
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -81,12 +81,12 @@ void hunt_far_right(void) {
 }
 
 void hunt_near_left(void) {
-	set_heading(FULL_SPEED, -220);
+	set_heading(FULL_SPEED, -120);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_right(void) {
-	set_heading(FULL_SPEED, 220);
+	set_heading(FULL_SPEED, 120);
 	_delay_ms(STATE_DELAY);
 }
 
