@@ -2,7 +2,7 @@
  * File Name : utils.h
  * Purpose : Various utilities
  * Creation Date : 2013-01-16
- * Last Modified : tor 21 feb 2013 05:47:43
+ * Last Modified : mån 25 feb 2013 22:17:39
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -14,4 +14,5 @@ int16_t constrain(int16_t high, int16_t low, int16_t value);
 
 char is_within_range(int16_t high, int16_t low, int16_t value);
 
+uint16_t sharp_to_mm(uint16_t sharp)
 #endif
