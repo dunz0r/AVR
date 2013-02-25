@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : mån 25 feb 2013 14:34:59
+ * Last Modified : mån 25 feb 2013 19:41:19
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -58,29 +58,46 @@ uint8_t find_state(void) {
 /*}}}*/
 
 /*{{{ Behaviours */
-void wander(void) {
-	printf("Wander\n");
+void search(void) {
+	set_motors(0,0);
+	_delay_ms(200);
+}
+
+void hunt_far_both(void) {
+	set_heading(100, 0);
+	_delay_ms(200);
 }
 
 void hunt_far_left(void) {
-	printf("Hunt far left\n");
+	set_heading(100, -120);
+	_delay_ms(200);
 }
 
 
 void hunt_far_right(void) {
-	printf("Hunt far right\n");
+	set_heading(100, 120);
+	_delay_ms(200);
 }
 
 void hunt_near_left(void) {
-	printf("Hunt near left\n");
+	set_heading(200, -250);
+	_delay_ms(200);
 }
 
 void hunt_near_right(void) {
-	printf("Hunt near right\n");
+	set_heading(200, 250);
+	_delay_ms(200);
 }
 
+void hunt_near_both(void) {
+	set_heading(170, 0);
+	_delay_ms(200);
+}
+
+
 void attack(void) {
-	printf("Attack\n");
+	set_heading(200, 0);
+	_delay_ms(200);
 }
 /*}}}*/
 
@@ -104,53 +121,36 @@ int main(void) {
 		switch(state) {
 			case 1:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				set_heading(FULL_SPEED, 0);
-				_delay_ms(100);
+				attack();
 				break;
 			case 2:
 				printf("Hunt near left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				//_delay_ms(500);
-				set_heading(BASE_SPEED, -190);
-				_delay_ms(100);
+				hunt_near_left();
 				break;
 			case 3:
 				printf("Hunt near right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				set_heading(BASE_SPEED, 190);
-				_delay_ms(100);
-				//_delay_ms(500);
-			//	hunt_near_left();
+				hunt_near_right();
 				break;
 			case 4:
 				printf("Hunt near both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				set_heading(BASE_SPEED, 0);
-				_delay_ms(100);
-				//_delay_ms(500);
-			//	hunt_near_right();
+				hunt_near_right();
 				break;
 			case 5:
 				printf("Hunt far left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				set_heading(BASE_SPEED, -60);
-				_delay_ms(100);
-				//_delay_ms(500);
-			//	attack();
+				hunt_far_left();
 				break;
 			case 6:
 				set_heading(BASE_SPEED, 60);
 				printf("Hunt far right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				_delay_ms(100);
-				//_delay_ms(500);
+				hunt_far_right();
 				break;
 			case 7:
-				set_heading(BASE_SPEED, 0);
 				printf("Hunt far both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				_delay_ms(100);
-				//_delay_ms(500);
+				hunt_far_both();
 				break;
 			case 8:
-				set_heading(BASE_SPEED, 30);
 				printf("Search\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				_delay_ms(100);
-				//_delay_ms(500);
+				search();
 				break;
 		}
 
