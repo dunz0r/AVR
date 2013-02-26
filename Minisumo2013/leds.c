@@ -2,7 +2,7 @@
  * File Name : leds.c
  * Purpose :
  * Creation Date : 26-02-2013
- * Last Modified : tis 26 feb 2013 12:58:25
+ * Last Modified : tis 26 feb 2013 14:34:04
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -26,5 +26,36 @@ void binary_led(uint8_t number) {
 			PORTC &= ~(1 << 5);
 			PORTC &= ~(1 << 4);
 			PORTC |= (1 << 3);
-
-
+			break;
+		case 2:
+			PORTC &= ~(1 << 5);
+			PORTC |= (1 << 4);
+			PORTC &= ~(1 << 3);
+			break;
+		case 3:
+			PORTC &= ~(1 << 5);
+			PORTC |= (1 << 4);
+			PORTC |= (1 << 3);
+			break;
+		case 4:
+			PORTC |= (1 << 5);
+			PORTC &= ~(1 << 4);
+			PORTC &= ~(1 << 3);
+			break;
+		case 5:
+			PORTC |= (1 << 5);
+			PORTC &= ~(1 << 4);
+			PORTC |= (1 << 3);
+			break;
+		case 6:
+			PORTC |= (1 << 5);
+			PORTC |= (1 << 4);
+			PORTC &= ~(1 << 3);
+			break;
+		case 7:
+			PORTC |= (1 << 5);
+			PORTC |= (1 << 4);
+			PORTC |= (1 << 3);
+			break;
+	}
+}
