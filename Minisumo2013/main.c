@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 26 feb 2013 01:21:56
+ * Last Modified : tis 26 feb 2013 12:52:03
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -19,6 +19,9 @@
 
 // Startmodule from http://startmodule.com
 #include "startpin.h"
+
+// LEDs
+#include "leds.h"
 
 // Various utils
 #include "utils.h"
@@ -113,6 +116,7 @@ int main(void) {
 	init_motors();
 //	init_linesensors();
 	init_startpin();
+	init_leds();
 
 	// Enable global interrupts
 	sei();
@@ -122,6 +126,8 @@ int main(void) {
 	/*}}}*/
 
 	for(;;) {
+
+		/*
 		uint8_t state = find_state();
 		switch(state) {
 			case 1:
@@ -158,6 +164,7 @@ int main(void) {
 				search();
 				break;
 		}
+		*/
 
 	}
 }
