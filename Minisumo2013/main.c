@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 26 feb 2013 15:17:43
+ * Last Modified : tis 26 feb 2013 15:23:17
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -114,7 +114,7 @@ int main(void) {
 	init_adc();
 	init_usart();
 	init_motors();
-//	init_linesensors();
+	init_linesensors();
 	init_startpin();
 	init_leds();
 
