@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 26 feb 2013 12:52:03
+ * Last Modified : tis 26 feb 2013 15:00:29
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -127,6 +127,22 @@ int main(void) {
 
 	for(;;) {
 
+		binary_led(0);
+		_delay_ms(500);
+		binary_led(1);
+		_delay_ms(500);
+		binary_led(2);
+		_delay_ms(500);
+		binary_led(3);
+		_delay_ms(500);
+		binary_led(4);
+		_delay_ms(500);
+		binary_led(5);
+		_delay_ms(500);
+		binary_led(6);
+		_delay_ms(500);
+		binary_led(7);
+		_delay_ms(500);
 		/*
 		uint8_t state = find_state();
 		switch(state) {

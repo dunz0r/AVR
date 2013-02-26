@@ -2,7 +2,7 @@
  * File Name : startpin.c
  * Purpose :
  * Creation Date : 26-02-2013
- * Last Modified : tis 26 feb 2013 11:32:48
+ * Last Modified : tis 26 feb 2013 15:17:21
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -24,8 +24,11 @@ void init_startpin(void) {
 
 ISR(PCINT1_vect) {
 	if(!(PINB & (1 << PB1))){
-		set_motors(200,200);
-		_delay_ms(500);
+		binary_led(7);
+		_delay_ms(100);
+		binary_led(6);
+		_delay_ms(100);
+		binary_led(0);
 	}
 }
 
