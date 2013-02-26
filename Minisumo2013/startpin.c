@@ -2,7 +2,7 @@
  * File Name : startpin.c
  * Purpose :
  * Creation Date : 26-02-2013
- * Last Modified : tis 26 feb 2013 15:17:21
+ * Last Modified : tis 26 feb 2013 15:19:28
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -12,9 +12,9 @@
 /*{{{ Setup ISR etc */
 void init_startpin(void) {
 
-	// Set as output
+	// Set as input
 	DDRB &= ~(1 << DDB1);
-	// Enable Pin Change Interuppt 1
+	// Enable Pin Change Interuppt 0
 	PCICR |= (1 << PCIE0);
 	// Enable trigger on PCINT1(PB1)
 	PCMSK0 |= (1 << PCINT1);
