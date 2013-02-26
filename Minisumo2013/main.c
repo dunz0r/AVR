@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 26 feb 2013 15:23:17
+ * Last Modified : tis 26 feb 2013 16:21:50
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -128,7 +128,6 @@ int main(void) {
 	for(;;) {
 
 		binary_led(0);
-		/*
 		uint8_t state = find_state();
 		switch(state) {
 			case 1:
@@ -165,7 +164,6 @@ int main(void) {
 				search();
 				break;
 		}
-		*/
 
 	}
 }
