@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 26 feb 2013 00:29:39
+ * Last Modified : tis 26 feb 2013 01:21:56
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -17,10 +17,13 @@
 #include "motors.h"
 #include "linesensors.h"
 
+// Startmodule from http://startmodule.com
+#include "startpin.h"
 
 // Various utils
 #include "utils.h"
 
+// Various speeds, delays and such
 #include "defines.h"
 
 // Set stream pointer
@@ -109,6 +112,7 @@ int main(void) {
 	init_usart();
 	init_motors();
 //	init_linesensors();
+	init_startpin();
 
 	// Enable global interrupts
 	sei();
