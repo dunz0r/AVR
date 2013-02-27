@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : ons 27 feb 2013 09:38:06
+ * Last Modified : ons 27 feb 2013 09:55:30
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -73,6 +73,16 @@ uint8_t find_state(void) {
 /*}}}*/
 
 /*{{{ Behaviours */
+left_turn(void) {
+	set_motors(255,-500);
+	_delay_ms(200);
+}
+
+right_turn(void) {
+	set_motors(-255,500);
+	_delay_ms(200);
+}
+
 void search(void) {
 	//set_heading(BASE_SPEED, 30);
 	set_motors(0,0);
@@ -148,15 +158,11 @@ int main(void) {
 
 	for(;;) {
 
-		// Turn to either side if sidesensors trigger
-		if(PIND & (1 << PB4)){
-			set_motors(0,-190);
-			_delay_ms(200);
-		}
-		if(PIND & (1 << PB5)){
-			set_motors(0,190);
-			_delay_ms(200);
-		}
+		// If the side sensors trigger
+		if(!(PINB & (1 << PB4)))
+			left_turn();
+		if(!(PINB & (1 << PB5)))
+			right_turn();
 
 		uint8_t state = find_state();
 		switch(state) {
