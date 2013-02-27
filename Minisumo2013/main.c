@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 26 feb 2013 16:36:54
+ * Last Modified : ons 27 feb 2013 09:38:06
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -10,12 +10,20 @@
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-// USART
+// Serial send
 #include "usart.h"
+
 // ADC with interrupts
 #include "adc.h"
+
+// Motor control
 #include "motors.h"
+
+// Front mounted CNY70 linesensors
 #include "linesensors.h"
+
+// Side mounted Sharp 10cm digital sensors
+#include "sidesensors.h"
 
 // Startmodule from http://startmodule.com
 #include "startpin.h"
@@ -127,6 +135,7 @@ int main(void) {
 	init_adc();
 	init_usart();
 	init_motors();
+	init_sidesensors();
 	//init_linesensors();
 	init_startpin();
 
@@ -138,6 +147,16 @@ int main(void) {
 	/*}}}*/
 
 	for(;;) {
+
+		// Turn to either side if sidesensors trigger
+		if(PIND & (1 << PB4)){
+			set_motors(0,-190);
+			_delay_ms(200);
+		}
+		if(PIND & (1 << PB5)){
+			set_motors(0,190);
+			_delay_ms(200);
+		}
 
 		uint8_t state = find_state();
 		switch(state) {
