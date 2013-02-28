@@ -2,7 +2,7 @@
  * File Name : utils.c
  * Purpose : Various utilities
  * Creation Date : 2013-01-16
- * Last Modified : mån 25 feb 2013 22:26:51
+ * Last Modified : tor 28 feb 2013 14:19:32
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */

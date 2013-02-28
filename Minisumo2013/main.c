@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 28 feb 2013 14:08:20
+ * Last Modified : tor 28 feb 2013 14:19:17
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -90,12 +90,13 @@ void search(void) {
 }
 
 void hunt_far_both(void) {
-	if(ad_value[0] > ad_value[1])
+	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
+			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
+		set_heading(BASE_SPEED, 0);
+	else if(ad_value[0] > ad_value[1])
 		set_heading(BASE_SPEED, 30);
 	else if(ad_value[0] > ad_value[1])
 		set_heading(BASE_SPEED, -30);
-	else
-		set_heading(BASE_SPEED, 0);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -121,12 +122,13 @@ void hunt_near_right(void) {
 }
 
 void hunt_near_both(void) {
-	if(ad_value[0] > ad_value[1])
+	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
+			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
+		set_heading(FULL_SPEED, 0);
+	else if(ad_value[0] > ad_value[1])
 		set_heading(FULL_SPEED, 130);
 	else if(ad_value[0] > ad_value[1])
 		set_heading(FULL_SPEED, -130);
-	else
-		set_heading(FULL_SPEED, 0);
 	_delay_ms(STATE_DELAY);
 }
 
