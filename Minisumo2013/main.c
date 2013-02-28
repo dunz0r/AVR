@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 28 feb 2013 13:32:04
+ * Last Modified : tor 28 feb 2013 14:08:20
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -43,6 +43,7 @@ FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
 /*{{{ Read sensors and decide on state */
 uint8_t find_state(void) {
 	uint8_t state;
+	// Any of the sensors are above ATT_THRESH
 	if(is_within_range(700, ATT_THRESH, ad_value[0]) || is_within_range(700, ATT_THRESH, ad_value[1]))
 		state = 0;
 	// Left sensor is above NEAR_THRESH and right is below
@@ -66,19 +67,18 @@ uint8_t find_state(void) {
 	// None of the sensors are above any threshhold
 	else
 		state = 7;
-	// Show state on 3-bit displat
-	binary_led(state);
+	// Show state on 3-bit display
 	return state;
 }
 /*}}}*/
 
 /*{{{ Behaviours */
-left_turn(void) {
+void left_turn(void) {
 	set_motors(255,-500);
 	_delay_ms(200);
 }
 
-right_turn(void) {
+void right_turn(void) {
 	set_motors(-255,500);
 	_delay_ms(200);
 }
@@ -91,9 +91,11 @@ void search(void) {
 
 void hunt_far_both(void) {
 	if(ad_value[0] > ad_value[1])
+		set_heading(BASE_SPEED, 30);
+	else if(ad_value[0] > ad_value[1])
 		set_heading(BASE_SPEED, -30);
-	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -30);
+	else
+		set_heading(BASE_SPEED, 0);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -120,12 +122,13 @@ void hunt_near_right(void) {
 
 void hunt_near_both(void) {
 	if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, -100);
-	if(ad_value[1] > ad_value[0])
-		set_heading(FULL_SPEED, 100);
+		set_heading(FULL_SPEED, 130);
+	else if(ad_value[0] > ad_value[1])
+		set_heading(FULL_SPEED, -130);
+	else
+		set_heading(FULL_SPEED, 0);
 	_delay_ms(STATE_DELAY);
 }
-
 
 void attack(void) {
 	set_heading(FULL_SPEED, 0);
@@ -165,12 +168,13 @@ int main(void) {
 	for(;;) {
 
 		// If the side sensors trigger
-		if(!(PINB & (1 << PB4)))
-			left_turn();
-		if(!(PINB & (1 << PB5)))
-			right_turn();
+		//if(!(PINB & (1 << PB4)))
+		//	left_turn();
+		//if(!(PINB & (1 << PB5)))
+		//	right_turn();
 
 		uint8_t state = find_state();
+		binary_led(state+1);
 		switch(state) {
 			case 0:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
@@ -186,14 +190,13 @@ int main(void) {
 				break;
 			case 3:
 				printf("Hunt near both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_right();
+				hunt_near_both();
 				break;
 			case 4:
 				printf("Hunt far left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				hunt_far_left();
 				break;
 			case 5:
-				set_heading(BASE_SPEED, 60);
 				printf("Hunt far right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				hunt_far_right();
 				break;
