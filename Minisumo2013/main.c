@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 28 feb 2013 14:19:17
+ * Last Modified : fre  1 mar 2013 02:03:06
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -67,7 +67,6 @@ uint8_t find_state(void) {
 	// None of the sensors are above any threshhold
 	else
 		state = 7;
-	// Show state on 3-bit display
 	return state;
 }
 /*}}}*/
@@ -176,7 +175,8 @@ int main(void) {
 		//	right_turn();
 
 		uint8_t state = find_state();
-		binary_led(state+1);
+		// Show state on 3-bit display
+		binary_led(state);
 		switch(state) {
 			case 0:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
