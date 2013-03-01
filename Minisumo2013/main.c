@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : fre  1 mar 2013 02:03:06
+ * Last Modified : fre  1 mar 2013 02:08:32
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -83,7 +83,13 @@ void right_turn(void) {
 }
 
 void search(void) {
-	//set_heading(BASE_SPEED, 30);
+	/*
+	if(ad_value[0] > ad_value[1])
+		set_heading(LOW_SPEED, 20);
+	else if(ad_value[1] > ad_value[0])
+		set_heading(LOW_SPEED, -20);
+	_delay_ms(STATE_DELAY);
+	*/
 	set_motors(0,0);
 	_delay_ms(STATE_DELAY);
 }
