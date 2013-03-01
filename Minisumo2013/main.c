@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : fre  1 mar 2013 02:09:05
+ * Last Modified : fre  1 mar 2013 02:48:03
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -102,7 +102,7 @@ void hunt_far_both(void) {
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
 		set_heading(BASE_SPEED, 30);
-	else if(ad_value[0] > ad_value[1])
+	else if(ad_value[1] > ad_value[0])
 		set_heading(BASE_SPEED, -30);
 	_delay_ms(STATE_DELAY);
 }
