@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : fre  1 mar 2013 03:20:19
+ * Last Modified : lör  2 mar 2013 16:43:06
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -83,38 +83,34 @@ void right_turn(void) {
 }
 
 void search(void) {
-	/*
 	if(ad_value[0] > ad_value[1])
-		set_heading(LOW_SPEED, 20);
+		set_heading(LOW_SPEED, 30);
 	else if(ad_value[1] > ad_value[0])
-		set_heading(LOW_SPEED, -20);
-	_delay_ms(STATE_DELAY);
+		set_heading(LOW_SPEED, -30);
 	else
 		set_heading(LOW_SPEED, 0);
-	*/
-	set_motors(0,0);
+	//set_motors(0,0);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_both(void) {
-	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
-			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
+	if(ad_value[0] == ad_value[1])	
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(BASE_SPEED, 30);
+		set_heading(BASE_SPEED, 40);
 	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -30);
+		set_heading(BASE_SPEED, -40);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_left(void) {
-	set_heading(BASE_SPEED, -20);
+	set_heading(BASE_SPEED, -60);
 	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(BASE_SPEED, 20);
+	set_heading(BASE_SPEED, 60);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -177,10 +173,10 @@ int main(void) {
 	for(;;) {
 
 		// If the side sensors trigger
-		//if(!(PINB & (1 << PB4)))
-		//	left_turn();
-		//if(!(PINB & (1 << PB5)))
-		//	right_turn();
+		if(!(PINB & (1 << PB4)))
+			left_turn();
+		if(!(PINB & (1 << PB5)))
+			right_turn();
 
 		uint8_t state = find_state();
 		// Show state on 3-bit display

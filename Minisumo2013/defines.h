@@ -2,15 +2,13 @@
  * File Name : defines.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : fre  1 mar 2013 02:07:39
+ * Last Modified : lör  2 mar 2013 23:21:42
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 
 // Header guard
 #ifndef DEFINE_H
-
-#include "utils.h"
 
 // Distance threshholds
 #define FAR_THRESH 110
