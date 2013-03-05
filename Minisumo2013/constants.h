@@ -1,8 +1,8 @@
 /*
- * File Name : defines.h
+ * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : lör  2 mar 2013 23:21:42
+ * Last Modified : lör  2 mar 2013 23:31:21
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -16,12 +16,13 @@
 #define ATT_THRESH 300
 
 // Speeds
-#define LOW_SPEED 100
+#define LOW_SPEED (BASE_SPEED / 1.5)
 #define BASE_SPEED 120
-#define FULL_SPEED 160
+#define FULL_SPEED (BASE_SPEED * 1.5)
 
 // Times
-#define STATE_DELAY 50
+//#define STATE_DELAY 60
+#define STATE_DELAY (BASE_SPEED / 2)
 
 
 #endif

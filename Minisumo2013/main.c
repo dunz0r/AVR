@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör  2 mar 2013 16:43:06
+ * Last Modified : tis  5 mar 2013 14:27:53
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -35,7 +35,7 @@
 #include "utils.h"
 
 // Various speeds, delays and such
-#include "defines.h"
+#include "constants.h"
 
 // Set stream pointer
 FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
@@ -173,9 +173,9 @@ int main(void) {
 	for(;;) {
 
 		// If the side sensors trigger
-		if(!(PINB & (1 << PB4)))
+		if(!(PINB & (1 << PB4)) && ad_value[0] < ATT_THRESH && ad_value[1] > ATT_THRESH)
 			left_turn();
-		if(!(PINB & (1 << PB5)))
+		if(!(PINB & (1 << PB5)) && ad_value[0] < ATT_THRESH && ad_value[1] > ATT_THRESH)
 			right_turn();
 
 		uint8_t state = find_state();
