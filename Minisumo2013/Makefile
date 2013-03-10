@@ -216,7 +216,7 @@ $(TARGET).elf: $(OBJ)
 clean:
 	@echo Cleaning
 	@$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
-	@$(TARGET).map $(TARGET).sym $(TARGET).lss \
+	@$(TARGET).map $(TARGET).sym $(TARGET).lss $(TARGET).o \
 	@$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)
 
 depend:
