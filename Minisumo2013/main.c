@@ -2,7 +2,11 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
+<<<<<<< HEAD
  * Last Modified : mån 11 mar 2013 20:45:29
+=======
+ * Last Modified : sön 10 mar 2013 11:00:05
+>>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -172,12 +176,13 @@ int main(void) {
 
 	for(;;) {
 
-		// If the side sensors trigger
+		// If the side sensors trigger and the attack sensors are below ATT_THRESH
 		if(!(PINB & (1 << PB4)) && ad_value[0] < ATT_THRESH && ad_value[1] > ATT_THRESH)
 			left_turn();
 		if(!(PINB & (1 << PB5)) && ad_value[0] < ATT_THRESH && ad_value[1] > ATT_THRESH)
 			right_turn();
 
+		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
 		binary_led(state);
