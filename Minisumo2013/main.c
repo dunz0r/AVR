@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis  5 mar 2013 14:27:53
+ * Last Modified : mån 11 mar 2013 20:45:29
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -73,12 +73,12 @@ uint8_t find_state(void) {
 
 /*{{{ Behaviours */
 void left_turn(void) {
-	set_motors(255,-500);
+	set_motors(255,-255);
 	_delay_ms(200);
 }
 
 void right_turn(void) {
-	set_motors(-255,500);
+	set_motors(-255,255);
 	_delay_ms(200);
 }
 
