@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : mån 11 mar 2013 20:47:06
+ * Last Modified : tor 14 mar 2013 21:52:46
 =======
- * Last Modified : mån 11 mar 2013 20:47:06
+ * Last Modified : tor 14 mar 2013 21:52:46
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -177,11 +177,16 @@ int main(void) {
 	for(;;) {
 
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
-		if(!(PINB & (1 << PB4)) && ad_value[0] < ATT_THRESH && ad_value[1] > ATT_THRESH)
+		if(!(PINB & (1 << PB4)))
 			left_turn();
-		if(!(PINB & (1 << PB5)) && ad_value[0] < ATT_THRESH && ad_value[1] > ATT_THRESH)
+		if(!(PINB & (1 << PB5)))
 			right_turn();
+		
+		if(ad_value[0] > ATT_THRESH || ad_value[1] > ATT_THRESH)
+			set_heading(255,0);
 
+		set_heading(255, (ad_value[0] - ad_value[1])*2);
+		/*
 		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
@@ -220,7 +225,9 @@ int main(void) {
 				search();
 				break;
 		}
+		*/
 
 	}
 }
 /*}}}*/
+
