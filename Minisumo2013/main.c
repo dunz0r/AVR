@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : mån 18 mar 2013 17:51:20
+ * Last Modified : mån 18 mar 2013 18:02:23
 =======
- * Last Modified : mån 18 mar 2013 17:51:20
+ * Last Modified : mån 18 mar 2013 18:02:23
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -16,6 +16,9 @@
 #include <avr/interrupt.h>
 // Serial send
 #include "usart.h"
+
+// Button for selecting strategy
+#include "switch.h"
 
 // ADC with interrupts
 #include "adc.h"
@@ -92,28 +95,31 @@ void full_turn(void) {
 }
 
 void search(void) {
-	set_heading(255, (ad_value[0] - ad_value[1]));
+	set_heading(255, (ad_value[0] - ad_value[1]) * 3);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_both(void) {
-	if(ad_value[0] == ad_value[1])	
+	set_heading(255, (ad_value[0] - ad_value[1]) * 2);
+	/*
+	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
 		set_heading(BASE_SPEED, 40);
 	else if(ad_value[1] > ad_value[0])
 		set_heading(BASE_SPEED, -40);
+		*/
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_left(void) {
-	set_heading(BASE_SPEED, -60);
+	set_heading(BASE_SPEED, -70);
 	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(BASE_SPEED, 60);
+	set_heading(BASE_SPEED, 70);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -128,6 +134,8 @@ void hunt_near_right(void) {
 }
 
 void hunt_near_both(void) {
+	set_heading(255, (ad_value[0] - ad_value[1]));
+	/*
 	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
 			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
 		set_heading(FULL_SPEED, 0);
@@ -136,6 +144,7 @@ void hunt_near_both(void) {
 	else if(ad_value[0] > ad_value[1])
 		set_heading(FULL_SPEED, -130);
 	_delay_ms(STATE_DELAY);
+	*/
 }
 
 void attack(void) {
@@ -158,7 +167,7 @@ int main(void) {
 	while(!(PINB & (1 << PB1))){
 		set_motors(0,0);
 		// Read the button and cycle through strategys
-		if(PINB & (1 << PB2)){
+		if(switch_is_pressed()){
 			strategy++;
 			if(strategy > 3)
 				strategy = 1;
@@ -204,8 +213,7 @@ int main(void) {
 		if(ad_value[0] > ATT_THRESH || ad_value[1] > ATT_THRESH)
 			set_heading(255,0);
 
-		set_heading(255, (ad_value[0] - ad_value[1])*3);
-		/*
+		//set_heading(255, (ad_value[0] - ad_value[1])*3);
 		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
@@ -244,8 +252,6 @@ int main(void) {
 				search();
 				break;
 		}
-		*/
-
 	}
 }
 /*}}}*/

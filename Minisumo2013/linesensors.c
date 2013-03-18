@@ -2,7 +2,7 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : mån 18 mar 2013 17:35:55
+ * Last Modified : mån 18 mar 2013 18:04:26
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -14,6 +14,7 @@ void init_linesensors(char on_black) {
 		// Set PD2 to be an input
 		DDRD &= ~(1 << PD2);
 		// Trigger on falling edge
+		// TODO test with any logic change
 		EICRA |= (1 << ISC01);
 		EIMSK |= (1 << INT0);
 		/* }}} */
@@ -23,6 +24,7 @@ void init_linesensors(char on_black) {
 		DDRD &= ~(1 << PD2);
 
 		// Trigger on falling edge
+		// TODO test with any logic change
 		EICRA |= (1 << ISC11);
 		EIMSK |= (1 << INT1);
 		/* }}} */
