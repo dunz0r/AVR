@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : mån 18 mar 2013 22:21:37
+ * Last Modified : mån 18 mar 2013 22:50:36
 =======
- * Last Modified : mån 18 mar 2013 22:21:37
+ * Last Modified : mån 18 mar 2013 22:50:36
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -94,9 +94,9 @@ void full_turn(void) {
 	_delay_ms(350);
 }
 
-void reverse(uint8_t delay) {
+void reverse(void) {
 	set_motors(-255,-255);
-	_delay_ms(delay);
+	_delay_ms(200);
 }
 
 void search(void) {
@@ -180,7 +180,7 @@ int main(void) {
 		// Read the button and cycle through strategys
 		if(switch_is_pressed()){
 			strategy++;
-			if(strategy > 4)
+			if(strategy > 6)
 				strategy = 1;
 			_delay_ms(200);
 		}
@@ -204,15 +204,15 @@ int main(void) {
 			full_turn();
 			break;
 		case 4:
-			reverse(200);
+			reverse();
 			right_turn();
 			break;
 		case 5:
-			reverse(200);
+			reverse();
 			left_turn();
 			break;
 		case 6:
-			reverse(200);
+			reverse();
 			full_turn();
 			break;
 		}
