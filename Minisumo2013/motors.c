@@ -2,7 +2,7 @@
  * File Name : motors.c
  * Purpose : Control of motors via an L298N H-bridge
  * Creation Date : 2013-01-16
- * Last Modified : Mon 11 Feb 2013 15:27:15 CET
+ * Last Modified : lör 16 mar 2013 18:17:10
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */

@@ -2,7 +2,7 @@
  * File Name : linesensors.h
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : tis 26 feb 2013 00:56:42
+ * Last Modified : mån 18 mar 2013 17:27:45
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -17,5 +17,5 @@
 #include "motors.h"
 #include "usart.h"
 
-void init_linesensors(void);
+void init_linesensors(char on_black);
 #endif

@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : tor 14 mar 2013 21:52:46
+ * Last Modified : mån 18 mar 2013 17:48:38
 =======
- * Last Modified : tor 14 mar 2013 21:52:46
+ * Last Modified : mån 18 mar 2013 17:48:38
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -86,14 +86,13 @@ void right_turn(void) {
 	_delay_ms(200);
 }
 
+void full_turn(void) {
+	set_motors(-255,255);
+	delay_ms(350);
+}
+
 void search(void) {
-	if(ad_value[0] > ad_value[1])
-		set_heading(LOW_SPEED, 30);
-	else if(ad_value[1] > ad_value[0])
-		set_heading(LOW_SPEED, -30);
-	else
-		set_heading(LOW_SPEED, 0);
-	//set_motors(0,0);
+	set_heading(255, (ad_value[0] - ad_value[1])
 	_delay_ms(STATE_DELAY);
 }
 
@@ -148,24 +147,31 @@ void attack(void) {
 /*{{{ Main function */
 int main(void) {
 
-	init_leds();
-	/*{{{ Wait for startpin to go high */
-	while(!(PINB & (1 << PB1))){
-		set_motors(0,0);
-		binary_led(2);
-		_delay_ms(50);
-		binary_led(4);
-		_delay_ms(50);
-	}
-	/*}}}*/
-
-	/*{{{ Init stuff */
+	uint8_t strategy = 1;
+	/*{{{ Init stuff before start */
 	init_adc();
 	init_usart();
 	init_motors();
 	init_sidesensors();
-	//init_linesensors();
+	init_leds();
+	// Wait for startpin to go high
+	while(!(PINB & (1 << PB1))){
+		set_motors(0,0);
+		// Read the button and cycle through strategys
+		if(PINB & (1 << PB2)){
+			strategy++;
+			if(strategy > 3)
+				strategy = 1;
+			delay_ms(30);
+			binary_led(strategy)
+		}
+	}
+	/*}}}*/
+
+	/*{{{ Init stuff after start */
+
 	init_startpin();
+	init_linesensors(ON_BLACK);
 
 	// Enable global interrupts
 	sei();
@@ -173,6 +179,19 @@ int main(void) {
 	// Assign our stream to standard I/O streams
 	stdout=&usart0_str;
 	/*}}}*/
+
+	// Perform starting strategy
+	switch(strategy) {
+		case 1:
+			left_turn();
+			break;
+		case 2:
+			right_turn();
+			break;
+		case 3:
+			full_turn();
+			break;
+		}
 
 	for(;;) {
 
@@ -185,7 +204,7 @@ int main(void) {
 		if(ad_value[0] > ATT_THRESH || ad_value[1] > ATT_THRESH)
 			set_heading(255,0);
 
-		set_heading(255, (ad_value[0] - ad_value[1])*2);
+		set_heading(255, (ad_value[0] - ad_value[1])*3);
 		/*
 		// Decide which state the sensors are in
 		uint8_t state = find_state();

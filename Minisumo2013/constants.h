@@ -2,13 +2,16 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : tor 14 mar 2013 21:52:16
+ * Last Modified : mån 18 mar 2013 17:37:04
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 
 // Header guard
 #ifndef DEFINE_H
+
+// If the surface is black
+#define ON_BLACK 0
 
 // Distance threshholds
 #define FAR_THRESH 110
