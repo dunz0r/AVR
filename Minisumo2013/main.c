@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : mån 18 mar 2013 18:02:23
+ * Last Modified : mån 18 mar 2013 22:21:37
 =======
- * Last Modified : mån 18 mar 2013 18:02:23
+ * Last Modified : mån 18 mar 2013 22:21:37
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -94,6 +94,11 @@ void full_turn(void) {
 	_delay_ms(350);
 }
 
+void reverse(uint8_t delay) {
+	set_motors(-255,-255);
+	_delay_ms(delay);
+}
+
 void search(void) {
 	set_heading(255, (ad_value[0] - ad_value[1]) * 3);
 	_delay_ms(STATE_DELAY);
@@ -156,38 +161,36 @@ void attack(void) {
 /*{{{ Main function */
 int main(void) {
 
+	// The start module is slow 1/10, just to be sure
+	_delay_ms(30);
+	// Disable global interrupts during start sequence
+	cli();
 	uint8_t strategy = 1;
-	/*{{{ Init stuff before start */
 	init_adc();
 	init_usart();
 	init_motors();
 	init_sidesensors();
 	init_leds();
+	init_startpin();
+	init_linesensors(ON_BLACK);
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
+		binary_led(strategy);
 		set_motors(0,0);
 		// Read the button and cycle through strategys
 		if(switch_is_pressed()){
 			strategy++;
-			if(strategy > 3)
+			if(strategy > 4)
 				strategy = 1;
-			_delay_ms(30);
-			binary_led(strategy);
+			_delay_ms(200);
 		}
 	}
-	/*}}}*/
-
-	/*{{{ Init stuff after start */
-
-	init_startpin();
-	init_linesensors(ON_BLACK);
 
 	// Enable global interrupts
 	sei();
 
 	// Assign our stream to standard I/O streams
 	stdout=&usart0_str;
-	/*}}}*/
 
 	// Perform starting strategy
 	switch(strategy) {
@@ -198,6 +201,18 @@ int main(void) {
 			right_turn();
 			break;
 		case 3:
+			full_turn();
+			break;
+		case 4:
+			reverse(200);
+			right_turn();
+			break;
+		case 5:
+			reverse(200);
+			left_turn();
+			break;
+		case 6:
+			reverse(200);
 			full_turn();
 			break;
 		}
