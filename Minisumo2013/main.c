@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : mån 18 mar 2013 17:48:38
+ * Last Modified : mån 18 mar 2013 17:51:20
 =======
- * Last Modified : mån 18 mar 2013 17:48:38
+ * Last Modified : mån 18 mar 2013 17:51:20
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -88,11 +88,11 @@ void right_turn(void) {
 
 void full_turn(void) {
 	set_motors(-255,255);
-	delay_ms(350);
+	_delay_ms(350);
 }
 
 void search(void) {
-	set_heading(255, (ad_value[0] - ad_value[1])
+	set_heading(255, (ad_value[0] - ad_value[1]));
 	_delay_ms(STATE_DELAY);
 }
 
@@ -162,8 +162,8 @@ int main(void) {
 			strategy++;
 			if(strategy > 3)
 				strategy = 1;
-			delay_ms(30);
-			binary_led(strategy)
+			_delay_ms(30);
+			binary_led(strategy);
 		}
 	}
 	/*}}}*/

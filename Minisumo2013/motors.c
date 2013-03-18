@@ -2,7 +2,7 @@
  * File Name : motors.c
  * Purpose : Control of motors via an L298N H-bridge
  * Creation Date : 2013-01-16
- * Last Modified : lör 16 mar 2013 18:17:10
+ * Last Modified : mån 18 mar 2013 17:49:43
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -32,7 +32,7 @@ void init_motors(void) {
 	DDRD |= (1 << 5); // ENABLE_A
 	DDRD |= (1 << 6); // ENABLE_B
 
-	// Clear OC0A and OC0B om compare match
+	// Clear OC0A and OC0B on compare match
 	TCCR0A |= (1 << COM0A1);
 	TCCR0A |= (1 << COM0B1);
 
@@ -40,7 +40,7 @@ void init_motors(void) {
 	TCCR0A |= (1 << WGM00);
 
 	// Prescaler att 64
-	TCCR0B |= (1 << CS01);
+	TCCR0A |= (1 << CS01);
 }
 /*}}}*/
 
