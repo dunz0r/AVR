@@ -2,7 +2,7 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : mån 18 mar 2013 17:58:28
+ * Last Modified : mån 18 mar 2013 22:53:05
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */

@@ -2,14 +2,13 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : mån 18 mar 2013 18:04:26
+ * Last Modified : mån 18 mar 2013 22:57:21
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 
 #include "linesensors.h"
-void init_linesensors(char on_black) {
-	if(on_black){
+void init_linesensors() {
 		/* {{{ INT0 */
 		// Set PD2 to be an input
 		DDRD &= ~(1 << PD2);
@@ -28,24 +27,6 @@ void init_linesensors(char on_black) {
 		EICRA |= (1 << ISC11);
 		EIMSK |= (1 << INT1);
 		/* }}} */
-	} else {
-	/* {{{ INT0 */
-		// Set PD2 to be an input
-		DDRD &= ~(1 << PD2);
-		// Trigger on rising edge
-		EICRA |= (1 << ISC01) | (1 << ISC00);
-		EIMSK |= (1 << INT0);
-		/* }}} */
-
-		/* {{{ INT1 */
-		// Set PD3 to be an input
-		DDRD &= ~(1 << PD2);
-
-		// Trigger on rising edge
-		EICRA |= (1 << ISC11) | (1 << ISC11);
-		EIMSK |= (1 << INT1);
-		/* }}} */
-	}
 }
 
 ISR (INT0_vect) {

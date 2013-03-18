@@ -3,9 +3,9 @@
  * Purpose : test adc
  * Creation Date : 2012-12-30
 <<<<<<< HEAD
- * Last Modified : mån 18 mar 2013 22:50:36
+ * Last Modified : mån 18 mar 2013 22:55:00
 =======
- * Last Modified : mån 18 mar 2013 22:50:36
+ * Last Modified : mån 18 mar 2013 22:55:00
 >>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -172,7 +172,7 @@ int main(void) {
 	init_sidesensors();
 	init_leds();
 	init_startpin();
-	init_linesensors(ON_BLACK);
+	//init_linesensors(ON_BLACK);
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);
@@ -270,4 +270,3 @@ int main(void) {
 	}
 }
 /*}}}*/
-
