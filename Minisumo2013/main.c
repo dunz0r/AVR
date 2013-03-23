@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör 23 mar 2013 17:57:24
+ * Last Modified : lör 23 mar 2013 21:11:22
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -232,7 +232,10 @@ int main(void) {
 		uint8_t state = find_state();
 		// Show state on 3-bit display
 		binary_led(state);
-		stop_timer1();
+		// Stop timer1 if we're not attacking
+		if(!(state == 0))
+			stop_timer1();
+
 		switch(state) {
 			case 0:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);

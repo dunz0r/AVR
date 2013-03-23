@@ -2,7 +2,7 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : lör 23 mar 2013 17:58:29
+ * Last Modified : lör 23 mar 2013 21:09:47
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -24,11 +24,10 @@
 // Speeds
 #define LOW_SPEED (FULL_SPEED * 0.4)
 #define BASE_SPEED (FULL_SPEED * 0.6)
-#define FULL_SPEED 255
+#define FULL_SPEED 90
 
 // Times
-//#define STATE_DELAY 60
-#define STATE_DELAY (FULL_SPEED / 5)
+#define STATE_DELAY (2000 / FULL_SPEED * 7)
 
 
 #endif
