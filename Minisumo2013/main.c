@@ -2,11 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
-<<<<<<< HEAD
- * Last Modified : lör 23 mar 2013 10:40:12
-=======
- * Last Modified : lör 23 mar 2013 10:40:12
->>>>>>> 60260805c406807d406ca70e0bc26a862f03c711
+ * Last Modified : lör 23 mar 2013 11:09:44
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -80,32 +76,32 @@ uint8_t find_state(void) {
 
 /*{{{ Behaviours */
 void left_turn(void) {
-	set_motors(255,-255);
+	set_motors(FULL_SPEED,-(FULL_SPEED));
 	_delay_ms(200);
 }
 
 void right_turn(void) {
-	set_motors(-255,255);
+	set_motors(-(FULL_SPEED),FULL_SPEED);
 	_delay_ms(200);
 }
 
 void full_turn(void) {
-	set_motors(-255,255);
+	set_motors(-FULL_SPEED,FULL_SPEED);
 	_delay_ms(350);
 }
 
 void reverse(void) {
-	set_motors(-255,-255);
+	set_motors(-(FULL_SPEED),-(FULL_SPEED));
 	_delay_ms(200);
 }
 
 void search(void) {
-	set_heading(255, (ad_value[0] - ad_value[1]) * 3);
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_both(void) {
-	set_heading(255, (ad_value[0] - ad_value[1]) * 2);
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 2);
 	/*
 	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
@@ -118,13 +114,13 @@ void hunt_far_both(void) {
 }
 
 void hunt_far_left(void) {
-	set_heading(BASE_SPEED, -70);
+	set_heading(FULL_SPEED, -70);
 	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(BASE_SPEED, 70);
+	set_heading(FULL_SPEED, 70);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -139,7 +135,7 @@ void hunt_near_right(void) {
 }
 
 void hunt_near_both(void) {
-	set_heading(255, (ad_value[0] - ad_value[1]));
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
 	/*
 	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
 			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
@@ -153,6 +149,7 @@ void hunt_near_both(void) {
 }
 
 void attack(void) {
+	binary_led(4);
 	set_heading(FULL_SPEED, 0);
 	_delay_ms(STATE_DELAY);
 }
@@ -161,7 +158,7 @@ void attack(void) {
 /*{{{ Main function */
 int main(void) {
 
-	// The start module is slow 1/10, just to be sure
+	// Short startup delay to make sure that the startmodule has initialized
 	_delay_ms(30);
 	// Disable global interrupts during start sequence
 	cli();
@@ -172,7 +169,7 @@ int main(void) {
 	init_sidesensors();
 	init_leds();
 	init_startpin();
-	//init_linesensors();
+	init_linesensors();
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);
@@ -225,9 +222,6 @@ int main(void) {
 		if(!(PINB & (1 << PB5)))
 			right_turn();
 		
-		if(ad_value[0] > ATT_THRESH || ad_value[1] > ATT_THRESH)
-			set_heading(255,0);
-
 		//set_heading(255, (ad_value[0] - ad_value[1])*3);
 		// Decide which state the sensors are in
 		uint8_t state = find_state();

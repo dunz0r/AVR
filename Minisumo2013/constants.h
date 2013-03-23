@@ -2,7 +2,7 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : lör 23 mar 2013 11:02:35
+ * Last Modified : lör 23 mar 2013 11:04:54
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -19,7 +19,7 @@
 #define ATT_THRESH 300
 
 // Speeds
-#define LOW_SPEED (BASE_SPEED / 1.5)
+#define LOW_SPEED (FULL_SPEED * 0.4)
 #define BASE_SPEED (FULL_SPEED * 0.6)
 #define FULL_SPEED 255
 
