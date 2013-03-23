@@ -2,7 +2,7 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : lör 23 mar 2013 14:59:30
+ * Last Modified : lör 23 mar 2013 15:47:50
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -46,7 +46,7 @@ ISR (INT0_vect) {
 		binary_led(1);
 		set_heading(-255,0);
 		_delay_ms(STATE_DELAY*2);
-		set_heading(0,100);
+		set_heading(0,200);
 		_delay_ms(STATE_DELAY*3);
 	}
 }
@@ -58,7 +58,7 @@ ISR (INT1_vect) {
 		binary_led(4);
 		set_heading(-255,0);
 		_delay_ms(STATE_DELAY*2);
-		set_heading(0,-100);
+		set_heading(0,-200);
 		_delay_ms(STATE_DELAY*3);
 	}
 }

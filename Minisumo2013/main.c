@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör 23 mar 2013 14:54:29
+ * Last Modified : lör 23 mar 2013 17:57:24
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -39,6 +39,9 @@
 
 // Various speeds, delays and such
 #include "constants.h"
+
+// Timer1
+#include "timer.h"
 
 // Set stream pointer
 FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
@@ -96,11 +99,8 @@ void reverse(void) {
 }
 
 void search(void) {
-	/*
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
 	_delay_ms(STATE_DELAY);
-	*/
-	set_motors(0,0);
 }
 
 void hunt_far_both(void) {
@@ -152,6 +152,8 @@ void hunt_near_both(void) {
 }
 
 void attack(void) {
+	// TODO start timer, on timer overflow, stop timer and do a j-turn
+	start_timer1();
 	binary_led(4);
 	set_heading(FULL_SPEED, 0);
 	_delay_ms(STATE_DELAY);
@@ -171,8 +173,10 @@ int main(void) {
 	init_motors();
 	init_sidesensors();
 	init_leds();
+	init_timer1();
 	init_startpin();
 	init_linesensors();
+	sei();
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);
@@ -218,8 +222,6 @@ int main(void) {
 		}
 
 	for(;;) {
-		set_motors(0,0);
-		/*
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
 		if(!(PINB & (1 << PB4)))
 			left_turn();
@@ -230,6 +232,7 @@ int main(void) {
 		uint8_t state = find_state();
 		// Show state on 3-bit display
 		binary_led(state);
+		stop_timer1();
 		switch(state) {
 			case 0:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
@@ -264,7 +267,6 @@ int main(void) {
 				search();
 				break;
 		}
-	*/
 	}
 }
 /*}}}*/
