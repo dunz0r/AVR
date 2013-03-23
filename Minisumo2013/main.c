@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör 23 mar 2013 14:00:44
+ * Last Modified : lör 23 mar 2013 14:54:29
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -96,8 +96,11 @@ void reverse(void) {
 }
 
 void search(void) {
+	/*
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
 	_delay_ms(STATE_DELAY);
+	*/
+	set_motors(0,0);
 }
 
 void hunt_far_both(void) {
@@ -114,13 +117,13 @@ void hunt_far_both(void) {
 }
 
 void hunt_far_left(void) {
-	set_heading(FULL_SPEED, -70);
+	set_heading(FULL_SPEED, -90);
 	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(FULL_SPEED, 70);
+	set_heading(FULL_SPEED, 90);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -215,14 +218,14 @@ int main(void) {
 		}
 
 	for(;;) {
-
+		set_motors(0,0);
+		/*
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
 		if(!(PINB & (1 << PB4)))
 			left_turn();
 		if(!(PINB & (1 << PB5)))
 			right_turn();
 		
-		//set_heading(255, (ad_value[0] - ad_value[1])*3);
 		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
@@ -261,6 +264,7 @@ int main(void) {
 				search();
 				break;
 		}
+	*/
 	}
 }
 /*}}}*/

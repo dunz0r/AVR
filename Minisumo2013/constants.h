@@ -2,7 +2,7 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : lör 23 mar 2013 14:01:56
+ * Last Modified : lör 23 mar 2013 14:52:46
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -11,7 +11,7 @@
 #ifndef DEFINE_H
 
 // If the surface is black
-#define ON_BLACK 0
+#define ON_BLACK 1
 
 // Stop or run motors
 #define RUN_MOTORS 1
