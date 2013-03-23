@@ -2,7 +2,7 @@
  * File Name : startpin.c
  * Purpose : Startmodule, http://startmodule.com
  * Creation Date : 26-02-2013
- * Last Modified : tis 26 feb 2013 16:41:22
+ * Last Modified : lör 23 mar 2013 14:00:37
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -18,7 +18,6 @@ void init_startpin(void) {
 	PCICR |= (1 << PCIE0);
 	// Enable trigger on PCINT1(PB1)
 	PCMSK0 |= (1 << PCINT1);
-	sei();
 }
 /*}}}*/
 

@@ -2,7 +2,7 @@
  * File Name : motors.c
  * Purpose : Control of motors via an L298N H-bridge
  * Creation Date : 2013-01-16
- * Last Modified : mån 18 mar 2013 22:50:44
+ * Last Modified : lör 23 mar 2013 13:35:26
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -46,43 +46,45 @@ void init_motors(void) {
 
 /*{{{ Control left and right motor speeds, stop if 0 */
 void set_motors(int16_t left_motor, int16_t right_motor) {
-	// Set motor speeds
-	// Forward
-	if(left_motor < 0) {
-		// Set INPUT1, INPUT2 for reverse
-		PORTB &= ~(1 << 0);
-		PORTD |= (1 << 7);
-		ENABLE_A = -(left_motor);
-	}
-	// Reverse
-	if(left_motor > 0) {
-		// Set INPUT1, INPUT2 for forward
-		PORTB |= (1 << 0);
-		PORTD &= ~(1 << 7);
-		ENABLE_A = left_motor;
-	} else if(left_motor == 0) { // Stop
-		PORTB &= ~(1 << 0);
-		PORTD &= ~(1 << 7);
-		ENABLE_A = 1;
-	}
-	
-	// Forward
-	if(right_motor > 0) {
-		// Set INPUT4, INPUT3 for reverse
-		PORTB &= ~(1 << 3);
-		PORTD |= (1 << 4);
-		ENABLE_B = right_motor;
-	}
-	// Reverse
-	if(right_motor < 0) {
-		// Set INPUT3, INPUT4 for forward
-		PORTD &= ~(1 << 4);
-		PORTB |= (1 << 3);
-		ENABLE_B = -(right_motor);
-	} else if(right_motor == 0) { // Stop
-		PORTD &= ~(1 << 4);
-		PORTB &= ~(1 << 3);
-		ENABLE_B = 1;
+	if(RUN_MOTORS) {
+		// Set motor speeds
+		// Forward
+		if(left_motor < 0) {
+			// Set INPUT1, INPUT2 for reverse
+			PORTB &= ~(1 << 0);
+			PORTD |= (1 << 7);
+			ENABLE_A = -(left_motor);
+		}
+		// Reverse
+		if(left_motor > 0) {
+			// Set INPUT1, INPUT2 for forward
+			PORTB |= (1 << 0);
+			PORTD &= ~(1 << 7);
+			ENABLE_A = left_motor;
+		} else if(left_motor == 0) { // Stop
+			PORTB &= ~(1 << 0);
+			PORTD &= ~(1 << 7);
+			ENABLE_A = 1;
+		}
+		
+		// Forward
+		if(right_motor > 0) {
+			// Set INPUT4, INPUT3 for reverse
+			PORTB &= ~(1 << 3);
+			PORTD |= (1 << 4);
+			ENABLE_B = right_motor;
+		}
+		// Reverse
+		if(right_motor < 0) {
+			// Set INPUT3, INPUT4 for forward
+			PORTD &= ~(1 << 4);
+			PORTB |= (1 << 3);
+			ENABLE_B = -(right_motor);
+		} else if(right_motor == 0) { // Stop
+			PORTD &= ~(1 << 4);
+			PORTB &= ~(1 << 3);
+			ENABLE_B = 1;
+		}
 	}
 }
 /*}}}*/

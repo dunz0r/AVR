@@ -2,7 +2,7 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : lör 23 mar 2013 11:04:54
+ * Last Modified : lör 23 mar 2013 14:01:56
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -12,6 +12,9 @@
 
 // If the surface is black
 #define ON_BLACK 0
+
+// Stop or run motors
+#define RUN_MOTORS 1
 
 // Distance threshholds
 #define FAR_THRESH 110
