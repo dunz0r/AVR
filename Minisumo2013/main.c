@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör 23 mar 2013 21:11:22
+ * Last Modified : lör 23 mar 2013 21:17:04
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -80,22 +80,22 @@ uint8_t find_state(void) {
 /*{{{ Behaviours */
 void left_turn(void) {
 	set_motors(FULL_SPEED,-(FULL_SPEED));
-	_delay_ms(200);
+	_delay_ms(STATE_4);
 }
 
 void right_turn(void) {
 	set_motors(-(FULL_SPEED),FULL_SPEED);
-	_delay_ms(200);
+	_delay_ms(STATE_4);
 }
 
 void full_turn(void) {
 	set_motors(-FULL_SPEED,FULL_SPEED);
-	_delay_ms(350);
+	_delay_ms(STATE_6);
 }
 
 void reverse(void) {
 	set_motors(-(FULL_SPEED),-(FULL_SPEED));
-	_delay_ms(200);
+	_delay_ms(STATE_4);
 }
 
 void search(void) {
@@ -186,7 +186,7 @@ int main(void) {
 			strategy++;
 			if(strategy > 6)
 				strategy = 1;
-			_delay_ms(200);
+			_delay_ms(250);
 		}
 	}
 
