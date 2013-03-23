@@ -2,7 +2,7 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : lör 23 mar 2013 21:17:38
+ * Last Modified : lör 23 mar 2013 21:35:43
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -36,29 +36,75 @@ void init_linesensors() {
 		EIMSK |= (1 << INT1);
 		/* }}} */
 
+	} else {
+		/* {{{ INT0 */
+		// Set PD2 to be an input
+		DDRD &= ~(1 << PD2);
+		// Trigger on low
+		// TODO test with any logic change
+		EICRA |= (1 << ISC01);
+		EICRA |= (1 << ISC00);
+		// Enable INT0
+		EIMSK |= (1 << INT0);
+		/* }}} */
+
+		/* {{{ INT1 */
+		// Set PD3 to be an input
+		DDRD &= ~(1 << PD3);
+
+		// Trigger on low
+		// TODO test with any logic change
+		EICRA |= (1 << ISC10);
+		EICRA |= (1 << ISC11);
+		// Enable INT1
+		EIMSK |= (1 << INT1);
+		/* }}} */
+
 	}
 }
 
 ISR (INT0_vect) {
 	// "Smoothing"
 	_delay_ms(1);
-	if(!(PIND & (1 << PD2))){
-		binary_led(1);
-		set_heading(-255,0);
-		_delay_ms(STATE_2);
-		set_heading(0,200);
-		_delay_ms(STATE_3);
+	if(ON_BLACK) {
+		if(!(PIND & (1 << PD2))){
+			binary_led(1);
+			set_heading(-255,0);
+			_delay_ms(STATE_2);
+			set_heading(0,200);
+			_delay_ms(STATE_3);
+		}
+	} else {
+		if(PIND & (1 << PD2)){
+			binary_led(1);
+			set_heading(-255,0);
+			_delay_ms(STATE_2);
+			set_heading(0,200);
+			_delay_ms(STATE_3);
+		}
 	}
+
 }
 
 ISR (INT1_vect) {
 	// "Smoothing"
 	_delay_ms(1);
-	if(!(PIND & (1 << PD3))){
-		binary_led(4);
-		set_heading(-255,0);
-		_delay_ms(STATE_2);
-		set_heading(0,-200);
-		_delay_ms(STATE_3);
+	if(ON_BLACK){
+		if(!(PIND & (1 << PD3))){
+			binary_led(4);
+			set_heading(-255,0);
+			_delay_ms(STATE_2);
+			set_heading(0,-200);
+			_delay_ms(STATE_3);
+		}
+	} else {
+		if(PIND & (1 << PD3)){
+			binary_led(4);
+			set_heading(-255,0);
+			_delay_ms(STATE_2);
+			set_heading(0,-200);
+			_delay_ms(STATE_3);
+		}
 	}
+
 }
