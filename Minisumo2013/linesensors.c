@@ -2,7 +2,7 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : lör 23 mar 2013 21:35:43
+ * Last Modified : sön 24 mar 2013 12:27:00
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -69,18 +69,18 @@ ISR (INT0_vect) {
 	if(ON_BLACK) {
 		if(!(PIND & (1 << PD2))){
 			binary_led(1);
-			set_heading(-255,0);
-			_delay_ms(STATE_2);
-			set_heading(0,200);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
+			set_heading(0,200);
+			_delay_ms(STATE_DELAY);
 		}
 	} else {
 		if(PIND & (1 << PD2)){
 			binary_led(1);
-			set_heading(-255,0);
-			_delay_ms(STATE_2);
-			set_heading(0,200);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
+			set_heading(0,200);
+			_delay_ms(STATE_DELAY);
 		}
 	}
 
@@ -92,18 +92,18 @@ ISR (INT1_vect) {
 	if(ON_BLACK){
 		if(!(PIND & (1 << PD3))){
 			binary_led(4);
-			set_heading(-255,0);
-			_delay_ms(STATE_2);
-			set_heading(0,-200);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
+			set_heading(0,-200);
+			_delay_ms(STATE_DELAY);
 		}
 	} else {
 		if(PIND & (1 << PD3)){
 			binary_led(4);
-			set_heading(-255,0);
-			_delay_ms(STATE_2);
-			set_heading(0,-200);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
+			set_heading(0,-200);
+			_delay_ms(STATE_DELAY);
 		}
 	}
 
