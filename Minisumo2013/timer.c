@@ -2,7 +2,7 @@
  * File Name : timer.c
  * Purpose : Timer1
  * Creation Date : 2013-01-16
- * Last Modified : lör 30 mar 2013 13:19:47
+ * Last Modified : lör 30 mar 2013 13:31:08
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -13,8 +13,8 @@ void init_timer1(void) {
 	// Mode 4, CTC on OCR1A
 	TCCR1B |= (1 << WGM12);
 	
-	// 62500
-	OCR1A = 0xF424;
+	// 65536
+	OCR1A = 0xFFFF;
 }
 
 void start_timer1(void) {
@@ -25,8 +25,7 @@ void start_timer1(void) {
 	TIMSK1 |= (1 << OCIE1A);
 
 	// Set prescaler to 1024, start timer
-	TCCR1B |= (1 << CS12);
-	TCCR1B |= (1 << CS10);
+	TCCR1B |= (1 << CS12) | (1 << CS10);
 }
 
 void stop_timer1(void) {
@@ -34,9 +33,8 @@ void stop_timer1(void) {
 	TCCR1B &= ~(1<<CS10);
 
 	// Clear prescaler to 1024
-	TCCR1B &= ~(1 << CS12);
-	TCCR1B &= ~(1 << CS10);
-	// Clear interrupt on compare match
+	TCCR1B &= ~(1 << CS12) & ~(1 << CS10);
+	//TCCR1B &= ~(1 << CS10);
 	TIMSK1 &= ~(1 << OCIE1A);
 }
 

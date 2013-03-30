@@ -2,7 +2,7 @@
  * File Name : constants.h
  * Purpose : Defined constants etc
  * Creation Date : 10-02-2013
- * Last Modified : tor 28 mar 2013 11:52:34
+ * Last Modified : lör 30 mar 2013 13:31:44
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -19,7 +19,7 @@
 // Distance threshholds
 #define FAR_THRESH 110
 #define NEAR_THRESH 160
-#define ATT_THRESH 300
+#define ATT_THRESH 330
 
 // Speeds
 #define LOW_SPEED (FULL_SPEED * 0.4)

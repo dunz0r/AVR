@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 28 mar 2013 11:51:57
+ * Last Modified : lör 30 mar 2013 13:34:20
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -159,6 +159,34 @@ void attack(void) {
 }
 /*}}}*/
 
+/* {{{ Strategy selector */
+void perform_strategy(uint16_t strategy) {
+	switch(strategy) {
+		case 1:
+			left_turn();
+			break;
+		case 2:
+			right_turn();
+			break;
+		case 3:
+			full_turn();
+			break;
+		case 4:
+			reverse();
+			right_turn();
+			break;
+		case 5:
+			reverse();
+			left_turn();
+			break;
+		case 6:
+			reverse();
+			full_turn();
+			break;
+		}
+}
+
+/* }}} */
 /*{{{ Main function */
 int main(void) {
 
@@ -195,29 +223,7 @@ int main(void) {
 	stdout=&usart0_str;
 
 	// Perform starting strategy
-	switch(strategy) {
-		case 1:
-			left_turn();
-			break;
-		case 2:
-			right_turn();
-			break;
-		case 3:
-			full_turn();
-			break;
-		case 4:
-			reverse();
-			right_turn();
-			break;
-		case 5:
-			reverse();
-			left_turn();
-			break;
-		case 6:
-			reverse();
-			full_turn();
-			break;
-		}
+	perform_strategy(strategy);
 
 	for(;;) {
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
@@ -231,9 +237,8 @@ int main(void) {
 		// Show state on 3-bit display
 		binary_led(state);
 		// Stop timer1 if we're not attacking
-		if(!(state == 0))
+		if(state != 0)
 			stop_timer1();
-
 		switch(state) {
 			case 0:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
