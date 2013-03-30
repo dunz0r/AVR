@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör 23 mar 2013 21:17:04
+ * Last Modified : tor 28 mar 2013 11:51:57
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -152,7 +152,6 @@ void hunt_near_both(void) {
 }
 
 void attack(void) {
-	// TODO start timer, on timer overflow, stop timer and do a j-turn
 	start_timer1();
 	binary_led(4);
 	set_heading(FULL_SPEED, 0);
@@ -176,7 +175,6 @@ int main(void) {
 	init_timer1();
 	init_startpin();
 	init_linesensors();
-	sei();
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);

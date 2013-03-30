@@ -2,7 +2,7 @@
  * File Name : timer.c
  * Purpose : Timer1
  * Creation Date : 2013-01-16
- * Last Modified : lör 23 mar 2013 20:01:55
+ * Last Modified : tor 28 mar 2013 11:52:23
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -11,8 +11,8 @@
 
 void init_timer1(void) {
 
-	// 62500
-	OCR1A = 0xF80C;
+	// 61500
+	OCR1A = 0xF424;
 
 	// Mode 4, CTC on OCR1A
 	TCCR1B |= (1 << WGM12);
@@ -46,7 +46,7 @@ ISR (TIMER1_COMPA_vect)
 	set_heading(-(FULL_SPEED), 255);
 	_delay_ms(STATE_DELAY);
 	set_heading(-(FULL_SPEED), 0);
-	_delay_ms(STATE_DELAY*2);
+	_delay_ms(STATE_2);
 	set_heading(-(FULL_SPEED), -255);
 	_delay_ms(STATE_DELAY);
 }
