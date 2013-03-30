@@ -2,7 +2,7 @@
  * File Name : timer.c
  * Purpose : Timer1
  * Creation Date : 2013-01-16
- * Last Modified : lör 30 mar 2013 13:18:59
+ * Last Modified : lör 30 mar 2013 13:19:47
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -13,8 +13,8 @@ void init_timer1(void) {
 	// Mode 4, CTC on OCR1A
 	TCCR1B |= (1 << WGM12);
 	
-	// 63500
-	OCR1A = 0xFBF4;
+	// 62500
+	OCR1A = 0xF424;
 }
 
 void start_timer1(void) {
