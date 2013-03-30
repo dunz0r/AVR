@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör 30 mar 2013 17:03:43
+ * Last Modified : lör 30 mar 2013 18:21:06
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -148,7 +148,7 @@ void attack(void) {
 /*}}}*/
 
 /* {{{ Strategy selector */
-void perform_strategy(uint16_t strategy) {
+void perform_strategy(uint8_t strategy) {
 	switch(strategy) {
 		case 1:
 			left_turn();
