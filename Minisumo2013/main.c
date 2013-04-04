@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor  4 apr 2013 18:06:45
+ * Last Modified : tor  4 apr 2013 18:08:24
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -269,4 +269,49 @@ ISR (TIMER1_COMPA_vect)
 	binary_led(2);
 	avoidance_move();
 }
+
+ISR (INT0_vect) {
+	// "Smoothing"
+	_delay_ms(1);
+	if(ON_BLACK) {
+		if(!(PIND & (1 << PD2))){
+			binary_led(1);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
+			_delay_ms(STATE_2);
+			set_heading(0,200);
+			_delay_ms(STATE_DELAY);
+		}
+	} else {
+		if(PIND & (1 << PD2)){
+			binary_led(1);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
+			_delay_ms(STATE_3);
+			set_heading(0,200);
+			_delay_ms(STATE_DELAY);
+		}
+	}
+}
+
+ISR (INT1_vect) {
+	// "Smoothing"
+	_delay_ms(1);
+	if(ON_BLACK){
+		if(!(PIND & (1 << PD3))){
+			binary_led(4);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
+			_delay_ms(STATE_3);
+			set_heading(0,-200);
+			_delay_ms(STATE_DELAY);
+		}
+	} else {
+		if(PIND & (1 << PD3)){
+			binary_led(4);
+			set_motors(-(FULL_SPEED),-(FULL_SPEED));
+			_delay_ms(STATE_3);
+			set_heading(0,-200);
+			_delay_ms(STATE_DELAY);
+		}
+	}
+}
+
 /*}}}*/
