@@ -3,9 +3,9 @@
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
 <<<<<<< HEAD
- * Last Modified : tor  4 apr 2013 18:01:20
+ * Last Modified : tor  4 apr 2013 18:07:11
 =======
- * Last Modified : tor  4 apr 2013 18:01:20
+ * Last Modified : tor  4 apr 2013 18:07:11
 >>>>>>> cf3adc64ff4cc44fcaba83dd79a920657e05af02
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -93,7 +93,6 @@ ISR (INT1_vect) {
 	if(ON_BLACK){
 		if(!(PIND & (1 << PD3))){
 			binary_led(4);
-<<<<<<< HEAD
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
 			set_heading(0,-200);
@@ -102,7 +101,6 @@ ISR (INT1_vect) {
 	} else {
 		if(PIND & (1 << PD3)){
 			binary_led(4);
-<<<<<<< HEAD
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
 			set_heading(0,-200);

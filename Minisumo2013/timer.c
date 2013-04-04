@@ -2,7 +2,7 @@
  * File Name : timer.c
  * Purpose : Timer1
  * Creation Date : 2013-01-16
- * Last Modified : lör 30 mar 2013 13:31:08
+ * Last Modified : tor  4 apr 2013 18:06:35
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -38,15 +38,4 @@ void stop_timer1(void) {
 	TIMSK1 &= ~(1 << OCIE1A);
 }
 
-// When the timer triggers, make J-turn
-ISR (TIMER1_COMPA_vect)
-{
 
-	binary_led(2);
-	set_heading(-(FULL_SPEED), 255);
-	_delay_ms(STATE_DELAY);
-	set_heading(-(FULL_SPEED), 0);
-	_delay_ms(STATE_2);
-	set_heading(-(FULL_SPEED), -255);
-	_delay_ms(STATE_DELAY);
-}

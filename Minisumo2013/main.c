@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor  4 apr 2013 18:02:07
+ * Last Modified : tor  4 apr 2013 18:06:45
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -79,6 +79,14 @@ void right_turn(void) {
 void full_turn(void) {
 	set_motors(-FULL_SPEED,FULL_SPEED);
 	_delay_ms(STATE_4);
+}
+
+void avoidance_move(void) {
+	set_motors(-(FULL_SPEED), -(LOW_SPEED));
+	_delay_ms(STATE_DELAY);
+	set_motors(-(FULL_SPEED), -(FULL_SPEED));
+	_delay_ms(STATE_DELAY);
+	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
 void reverse(void) {
@@ -171,6 +179,9 @@ void perform_strategy(uint8_t strategy) {
 			reverse();
 			full_turn();
 			break;
+		case 7:
+			reverse();
+			break;
 		}
 }
 
@@ -199,7 +210,7 @@ int main(void) {
 		// Read the button and cycle through strategys
 		if(switch_is_pressed()){
 			strategy++;
-			if(strategy > 6)
+			if(strategy > 7)
 				strategy = 1;
 			_delay_ms(250);
 		}
@@ -248,5 +259,14 @@ int main(void) {
 				break;
 		}
 	}
+}
+/*}}}*/
+
+/*{{{ ISRs */
+// When the timer triggers, make J-turn
+ISR (TIMER1_COMPA_vect)
+{
+	binary_led(2);
+	avoidance_move();
 }
 /*}}}*/
