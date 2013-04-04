@@ -2,14 +2,16 @@
  * File Name : linesensors.c
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
- * Last Modified : sön 24 mar 2013 12:27:00
+<<<<<<< HEAD
+ * Last Modified : tor  4 apr 2013 18:01:20
+=======
+ * Last Modified : tor  4 apr 2013 18:01:20
+>>>>>>> cf3adc64ff4cc44fcaba83dd79a920657e05af02
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
 
-#include "constants.h"
 #include "linesensors.h"
-#include "leds.h"
 
 void init_linesensors() {
 	if(ON_BLACK) {
@@ -70,7 +72,7 @@ ISR (INT0_vect) {
 		if(!(PIND & (1 << PD2))){
 			binary_led(1);
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_3);
+			_delay_ms(STATE_2);
 			set_heading(0,200);
 			_delay_ms(STATE_DELAY);
 		}
@@ -83,7 +85,6 @@ ISR (INT0_vect) {
 			_delay_ms(STATE_DELAY);
 		}
 	}
-
 }
 
 ISR (INT1_vect) {
@@ -92,6 +93,7 @@ ISR (INT1_vect) {
 	if(ON_BLACK){
 		if(!(PIND & (1 << PD3))){
 			binary_led(4);
+<<<<<<< HEAD
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
 			set_heading(0,-200);
@@ -100,11 +102,11 @@ ISR (INT1_vect) {
 	} else {
 		if(PIND & (1 << PD3)){
 			binary_led(4);
+<<<<<<< HEAD
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
 			_delay_ms(STATE_3);
 			set_heading(0,-200);
 			_delay_ms(STATE_DELAY);
 		}
 	}
-
 }

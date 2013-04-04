@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : sön 24 mar 2013 14:08:51
+ * Last Modified : tor  4 apr 2013 18:02:07
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -51,28 +51,16 @@ uint8_t find_state(void) {
 	uint8_t state;
 	// Any of the sensors are above ATT_THRESH
 	if(is_within_range(700, ATT_THRESH, ad_value[0]) || is_within_range(700, ATT_THRESH, ad_value[1]))
-		state = 0;
-	// Left sensor is above NEAR_THRESH and right is below
-	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) && !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
 		state = 1;
-	// Right sensor is above NEAR_THRESH and left is below
-	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]) && !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]))
-		state = 2;
 	// Both sensors are above NEAR_THRESH
 	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) && is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
-		state = 3;
-	// Left sensor is above FAR_THRESH and right sensor is below
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
-		state = 4;
-	// Right sensor is above FAR_THRESH and left sensor is below
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]) && !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]))
-		state = 5;
+		state = 2;
 	// Both sensors are above FAR_THRESH
 	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
-		state = 6;
+		state = 3;
 	// None of the sensors are above any threshhold
 	else
-		state = 7;
+		state = 4;
 	return state;
 }
 /*}}}*/
@@ -152,7 +140,6 @@ void hunt_near_both(void) {
 }
 
 void attack(void) {
-	// TODO start timer, on timer overflow, stop timer and do a j-turn
 	start_timer1();
 	binary_led(4);
 	set_heading(FULL_SPEED, 0);
@@ -160,43 +147,8 @@ void attack(void) {
 }
 /*}}}*/
 
-/*{{{ Main function */
-int main(void) {
-
-	// Short startup delay to make sure that the startmodule has initialized
-	_delay_ms(30);
-	// Disable global interrupts during start sequence
-	cli();
-	uint8_t strategy = 1;
-	init_adc();
-	init_usart();
-	init_motors();
-	init_sidesensors();
-	init_leds();
-	init_timer1();
-	init_startpin();
-	init_linesensors();
-	sei();
-	// Wait for startpin to go high
-	while(!(PINB & (1 << PB1))){
-		binary_led(strategy);
-		set_motors(0,0);
-		// Read the button and cycle through strategys
-		if(switch_is_pressed()){
-			strategy++;
-			if(strategy > 6)
-				strategy = 1;
-			_delay_ms(250);
-		}
-	}
-
-	// Enable global interrupts
-	sei();
-
-	// Assign our stream to standard I/O streams
-	stdout=&usart0_str;
-
-	// Perform starting strategy
+/* {{{ Strategy selector */
+void perform_strategy(uint8_t strategy) {
 	switch(strategy) {
 		case 1:
 			left_turn();
@@ -220,6 +172,47 @@ int main(void) {
 			full_turn();
 			break;
 		}
+}
+
+/* }}} */
+
+/*{{{ Main function */
+int main(void) {
+
+	// Short startup delay to make sure that the startmodule has initialized
+	_delay_ms(30);
+	// Disable global interrupts during start sequence
+	cli();
+	uint8_t strategy = 1;
+	init_adc();
+	init_usart();
+	init_motors();
+	init_sidesensors();
+	init_leds();
+	init_timer1();
+	init_startpin();
+	init_linesensors();
+	// Wait for startpin to go high
+	while(!(PINB & (1 << PB1))){
+		binary_led(strategy);
+		set_motors(0,0);
+		// Read the button and cycle through strategys
+		if(switch_is_pressed()){
+			strategy++;
+			if(strategy > 6)
+				strategy = 1;
+			_delay_ms(250);
+		}
+	}
+
+	// Enable global interrupts
+	sei();
+
+	// Assign our stream to standard I/O streams
+	stdout=&usart0_str;
+
+	// Perform starting strategy
+	perform_strategy(strategy);
 
 	for(;;) {
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
@@ -233,39 +226,23 @@ int main(void) {
 		// Show state on 3-bit display
 		binary_led(state);
 		// Stop timer1 if we're not attacking
-		if(!(state == 0))
+		if(state != 1)
 			stop_timer1();
 
 		switch(state) {
-			case 0:
+			case 1:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				attack();
 				break;
-			case 1:
-				printf("Hunt near left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_left();
-				break;
 			case 2:
-				printf("Hunt near right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_right();
-				break;
-			case 3:
-				printf("Hunt near both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+				printf("Hunt near left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				hunt_near_both();
 				break;
-			case 4:
-				printf("Hunt far left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_far_left();
-				break;
-			case 5:
-				printf("Hunt far right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_far_right();
-				break;
-			case 6:
-				printf("Hunt far both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+			case 3:
+				printf("Hunt near right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				hunt_far_both();
 				break;
-			case 7:
+			case 4:
 				printf("Search\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				search();
 				break;
