@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor  4 apr 2013 18:08:24
+ * Last Modified : lör  6 apr 2013 22:00:33
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -203,6 +203,18 @@ int main(void) {
 	init_timer1();
 	init_startpin();
 	init_linesensors();
+	// Test 1
+	set_motors(0,0);
+	binary_led(1);
+	_delay_ms(100);
+	binary_led(2);
+	_delay_ms(100);
+	binary_led(3);
+	_delay_ms(100);
+	binary_led(4);
+	_delay_ms(100);
+	binary_led(5);
+	_delay_ms(100);
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);
@@ -270,47 +282,44 @@ ISR (TIMER1_COMPA_vect)
 	avoidance_move();
 }
 
+ISR(PCINT0_vect) {
+	while(!(PINB & (1 << PB1))){
+		set_motors(0,0);
+		binary_led(1);
+		_delay_ms(50);
+		binary_led(4);
+		_delay_ms(50);
+		}
+}
+
 ISR (INT0_vect) {
 	// "Smoothing"
 	_delay_ms(1);
-	if(ON_BLACK) {
-		if(!(PIND & (1 << PD2))){
-			binary_led(1);
+	if(PIND & (1 << PD2)){
+		if(PINB & (1 << PB1)){
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
+			_delay_ms(75);
+			set_motors(0,-200);
 			_delay_ms(STATE_2);
-			set_heading(0,200);
-			_delay_ms(STATE_DELAY);
 		}
-	} else {
-		if(PIND & (1 << PD2)){
-			binary_led(1);
-			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_3);
-			set_heading(0,200);
-			_delay_ms(STATE_DELAY);
-		}
+		else
+			set_motors(0,0);
 	}
 }
 
 ISR (INT1_vect) {
 	// "Smoothing"
 	_delay_ms(1);
-	if(ON_BLACK){
-		if(!(PIND & (1 << PD3))){
+	if(PIND & (1 << PD3)){
+		if(PINB & (1 << PB1)){
 			binary_led(4);
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_3);
-			set_heading(0,-200);
-			_delay_ms(STATE_DELAY);
+			_delay_ms(75);
+			set_motors(-200,0);
+			_delay_ms(STATE_2);
 		}
-	} else {
-		if(PIND & (1 << PD3)){
-			binary_led(4);
-			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_3);
-			set_heading(0,-200);
-			_delay_ms(STATE_DELAY);
-		}
+		else
+			set_motors(0,0);
 	}
 }
 
