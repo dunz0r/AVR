@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : lör  6 apr 2013 22:00:33
+ * Last Modified : sön  7 apr 2013 01:48:56
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -68,12 +68,12 @@ uint8_t find_state(void) {
 /*{{{ Behaviours */
 void left_turn(void) {
 	set_motors(FULL_SPEED,-(FULL_SPEED));
-	_delay_ms(STATE_2);
+	_delay_ms(STATE_3);
 }
 
 void right_turn(void) {
 	set_motors(-(FULL_SPEED),FULL_SPEED);
-	_delay_ms(STATE_2);
+	_delay_ms(STATE_3);
 }
 
 void full_turn(void) {
@@ -83,15 +83,15 @@ void full_turn(void) {
 
 void avoidance_move(void) {
 	set_motors(-(FULL_SPEED), -(LOW_SPEED));
-	_delay_ms(STATE_DELAY);
+	_delay_ms(STATE_2);
 	set_motors(-(FULL_SPEED), -(FULL_SPEED));
-	_delay_ms(STATE_DELAY);
+	_delay_ms(STATE_2);
 	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
 void reverse(void) {
 	set_motors(-(FULL_SPEED),-(FULL_SPEED));
-	_delay_ms(STATE_4);
+	_delay_ms(STATE_3);
 }
 
 void search(void) {
@@ -283,7 +283,7 @@ ISR (TIMER1_COMPA_vect)
 }
 
 ISR(PCINT0_vect) {
-	while(!(PINB & (1 << PB1))){
+	while(!(PINB & (1 << PB1))) {
 		set_motors(0,0);
 		binary_led(1);
 		_delay_ms(50);
@@ -295,11 +295,12 @@ ISR(PCINT0_vect) {
 ISR (INT0_vect) {
 	// "Smoothing"
 	_delay_ms(1);
-	if(PIND & (1 << PD2)){
-		if(PINB & (1 << PB1)){
+	if(!(PIND & (1 << PD2))){
+		if(PINB & (1 << PB1)) {
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(75);
+			_delay_ms(STATE_3);
 			set_motors(0,-200);
+			set_motors(FULL_SPEED,-(FULL_SPEED));
 			_delay_ms(STATE_2);
 		}
 		else
@@ -310,12 +311,12 @@ ISR (INT0_vect) {
 ISR (INT1_vect) {
 	// "Smoothing"
 	_delay_ms(1);
-	if(PIND & (1 << PD3)){
-		if(PINB & (1 << PB1)){
+	if(!(PIND & (1 << PD3))) {
+		if(PINB & (1 << PB1)) {
 			binary_led(4);
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(75);
-			set_motors(-200,0);
+			_delay_ms(STATE_3);
+			set_motors(-(FULL_SPEED),FULL_SPEED);
 			_delay_ms(STATE_2);
 		}
 		else
