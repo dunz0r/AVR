@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : sön  7 apr 2013 01:48:56
+ * Last Modified : mån  8 apr 2013 18:59:40
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -294,34 +294,20 @@ ISR(PCINT0_vect) {
 
 ISR (INT0_vect) {
 	// "Smoothing"
-	_delay_ms(1);
-	if(!(PIND & (1 << PD2))){
-		if(PINB & (1 << PB1)) {
+			binary_led(1);
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_3);
-			set_motors(0,-200);
-			set_motors(FULL_SPEED,-(FULL_SPEED));
-			_delay_ms(STATE_2);
-		}
-		else
-			set_motors(0,0);
-	}
+			_delay_ms(STATE_5);
+			set_heading(0,90);
+			_delay_ms(STATE_DELAY);
 }
 
 ISR (INT1_vect) {
 	// "Smoothing"
-	_delay_ms(1);
-	if(!(PIND & (1 << PD3))) {
-		if(PINB & (1 << PB1)) {
-			binary_led(4);
+			binary_led(7);
 			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_3);
-			set_motors(-(FULL_SPEED),FULL_SPEED);
-			_delay_ms(STATE_2);
-		}
-		else
-			set_motors(0,0);
-	}
+			_delay_ms(STATE_5);
+			set_heading(0,-90);
+			_delay_ms(STATE_DELAY);
 }
 
 /*}}}*/

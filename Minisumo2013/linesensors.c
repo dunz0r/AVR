@@ -3,9 +3,9 @@
  * Purpose : Linesensors etc
  * Creation Date : 30-01-2013
 <<<<<<< HEAD
- * Last Modified : lör  6 apr 2013 21:59:14
+ * Last Modified : mån  8 apr 2013 18:51:43
 =======
- * Last Modified : lör  6 apr 2013 21:59:14
+ * Last Modified : mån  8 apr 2013 18:51:43
 >>>>>>> cf3adc64ff4cc44fcaba83dd79a920657e05af02
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
@@ -19,8 +19,8 @@ void init_linesensors() {
 		DDRD &= ~(1 << PD2);
 		// Trigger on low
 		// TODO test with any logic change
-		EICRA |= (1 << ISC01);
-		EICRA |= (1 << ISC00);
+		EICRA &= ~(1 << ISC01);
+		EICRA &= ~(1 << ISC00);
 		// Enable INT0
 		EIMSK |= (1 << INT0);
 		/* }}} */
@@ -31,8 +31,8 @@ void init_linesensors() {
 
 		// Trigger on low
 		// TODO test with any logic change
-		EICRA |= (1 << ISC10);
-		EICRA |= (1 << ISC11);
+		EICRA &= ~(1 << ISC10);
+		EICRA &= ~(1 << ISC11);
 		// Enable INT1
 		EIMSK |= (1 << INT1);
 		/* }}} */
