@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : mån  8 apr 2013 18:59:40
+ * Last Modified : tis  9 apr 2013 20:23:08
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -45,6 +45,10 @@
 
 // Set stream pointer
 FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
+
+/* This is a global variable to keep track on if we should do a full turn on line
+ * sensor hit or not */
+uint8_t linehit_counter = 0;
 
 /*{{{ Read sensors and decide on state */
 uint8_t find_state(void) {
@@ -293,21 +297,29 @@ ISR(PCINT0_vect) {
 }
 
 ISR (INT0_vect) {
-	// "Smoothing"
-			binary_led(1);
-			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_5);
-			set_heading(0,90);
-			_delay_ms(STATE_DELAY);
+	linehit_counter++;
+	if(linehit_counter == 4) {
+		binary_led(7);
+		set_heading(-(FULL_SPEED),0);
+		_delay_ms(STATE_5);
+		full_turn();
+	} else {
+
+		binary_led(1);
+		set_heading(-(FULL_SPEED),0);
+		_delay_ms(STATE_5);
+		set_heading(0,FULL_SPEED+FULL_SPEED);
+		_delay_ms(STATE_2);
+	}
 }
 
 ISR (INT1_vect) {
-	// "Smoothing"
-			binary_led(7);
-			set_motors(-(FULL_SPEED),-(FULL_SPEED));
-			_delay_ms(STATE_5);
-			set_heading(0,-90);
-			_delay_ms(STATE_DELAY);
+	linehit_counter++;
+	binary_led(7);
+	set_heading(-(FULL_SPEED),0);
+	_delay_ms(STATE_5);
+	set_heading(0,-(FULL_SPEED+FULL_SPEED));
+	_delay_ms(STATE_2);
 }
 
 /*}}}*/
