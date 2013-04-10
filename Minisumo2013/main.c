@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : ons 10 apr 2013 14:09:48
+ * Last Modified : tor 11 apr 2013 01:14:45
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -70,6 +70,17 @@ uint8_t find_state(void) {
 /*}}}*/
 
 /*{{{ Behaviours */
+void stop()  {
+	while(!(PINB & (1 << PB1))) {
+		cli();
+		set_motors(0,0);
+		for (i = 1; i < 7; i++) {
+			binary_led(i);
+			_delay_ms(100);
+		}
+	}
+}
+
 void left_turn(void) {
 	set_motors(FULL_SPEED,-(FULL_SPEED));
 	_delay_ms(STATE_3);
@@ -103,7 +114,7 @@ void search(void) {
 }
 
 void hunt_far_both(void) {
-	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 2);
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
 	/*
 	   if(ad_value[0] == ad_value[1])
 	   set_heading(BASE_SPEED, 0);
@@ -136,7 +147,7 @@ void hunt_near_right(void) {
 }
 
 void hunt_near_both(void) {
-	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 2);
 	/*
 	   if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
 	   is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
@@ -287,10 +298,7 @@ ISR (TIMER2_COMPA_vect) {
 }
 
 ISR(PCINT0_vect) {
-	while(!(PINB & (1 << PB1))) {
-		cli();
-		set_motors(0,0);
-	}
+	stop();
 }
 
 ISR (INT0_vect) {

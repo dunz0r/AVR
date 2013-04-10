@@ -2,7 +2,7 @@
  * File Name : timer.c
  * Purpose : Timer1
  * Creation Date : 2013-01-16
- * Last Modified : tis  9 apr 2013 20:50:34
+ * Last Modified : ons 10 apr 2013 17:32:55
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -45,7 +45,6 @@ void init_timer2(void) {
 	TCCR2B |= (1 << CS22);
 	// Enable CTC interrupt
 	TIMSK2 |= (1 << OCIE2A);
-	
 	// 255
 	OCR2A = 0xFF;
 }
