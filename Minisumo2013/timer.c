@@ -2,7 +2,7 @@
  * File Name : timer.c
  * Purpose : Timer1
  * Creation Date : 2013-01-16
- * Last Modified : tor  4 apr 2013 18:06:35
+ * Last Modified : tis  9 apr 2013 20:50:34
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -36,6 +36,18 @@ void stop_timer1(void) {
 	TCCR1B &= ~(1 << CS12) & ~(1 << CS10);
 	//TCCR1B &= ~(1 << CS10);
 	TIMSK1 &= ~(1 << OCIE1A);
+}
+
+void init_timer2(void) {
+	// CTC mode
+	TCCR2A |= (1 << WGM21);
+	// Prescaler at 64
+	TCCR2B |= (1 << CS22);
+	// Enable CTC interrupt
+	TIMSK2 |= (1 << OCIE2A);
+	
+	// 255
+	OCR2A = 0xFF;
 }
 
 

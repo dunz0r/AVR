@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis  9 apr 2013 20:23:08
+ * Last Modified : ons 10 apr 2013 14:09:48
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -48,7 +48,7 @@ FILE usart0_str = FDEV_SETUP_STREAM(usart0_sendbyte, NULL, _FDEV_SETUP_WRITE);
 
 /* This is a global variable to keep track on if we should do a full turn on line
  * sensor hit or not */
-uint8_t linehit_counter = 0;
+volatile uint8_t linehit_counter = 0;
 
 /*{{{ Read sensors and decide on state */
 uint8_t find_state(void) {
@@ -87,9 +87,9 @@ void full_turn(void) {
 
 void avoidance_move(void) {
 	set_motors(-(FULL_SPEED), -(LOW_SPEED));
-	_delay_ms(STATE_2);
+	_delay_ms(STATE_DELAY);
 	set_motors(-(FULL_SPEED), -(FULL_SPEED));
-	_delay_ms(STATE_2);
+	_delay_ms(STATE_DELAY);
 	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
@@ -100,20 +100,18 @@ void reverse(void) {
 
 void search(void) {
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
-	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_both(void) {
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 2);
 	/*
-	if(ad_value[0] == ad_value[1])
-		set_heading(BASE_SPEED, 0);
-	else if(ad_value[0] > ad_value[1])
-		set_heading(BASE_SPEED, 40);
-	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -40);
-		*/
-	_delay_ms(STATE_DELAY);
+	   if(ad_value[0] == ad_value[1])
+	   set_heading(BASE_SPEED, 0);
+	   else if(ad_value[0] > ad_value[1])
+	   set_heading(BASE_SPEED, 40);
+	   else if(ad_value[1] > ad_value[0])
+	   set_heading(BASE_SPEED, -40);
+	   */
 }
 
 void hunt_far_left(void) {
@@ -140,22 +138,20 @@ void hunt_near_right(void) {
 void hunt_near_both(void) {
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
 	/*
-	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
-			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
-		set_heading(FULL_SPEED, 0);
-	else if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 130);
-	else if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, -130);
-	_delay_ms(STATE_DELAY);
-	*/
+	   if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
+	   is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
+	   set_heading(FULL_SPEED, 0);
+	   else if(ad_value[0] > ad_value[1])
+	   set_heading(FULL_SPEED, 130);
+	   else if(ad_value[0] > ad_value[1])
+	   set_heading(FULL_SPEED, -130);
+	   _delay_ms(STATE_DELAY);
+	   */
 }
 
 void attack(void) {
 	start_timer1();
-	binary_led(4);
 	set_heading(FULL_SPEED, 0);
-	_delay_ms(STATE_DELAY);
 }
 /*}}}*/
 
@@ -186,7 +182,7 @@ void perform_strategy(uint8_t strategy) {
 		case 7:
 			reverse();
 			break;
-		}
+	}
 }
 
 /* }}} */
@@ -205,6 +201,7 @@ int main(void) {
 	init_sidesensors();
 	init_leds();
 	init_timer1();
+	init_timer2();
 	init_startpin();
 	init_linesensors();
 	// Test 1
@@ -247,7 +244,7 @@ int main(void) {
 			left_turn();
 		if(!(PINB & (1 << PB5)))
 			right_turn();
-		
+
 		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
@@ -280,46 +277,61 @@ int main(void) {
 
 /*{{{ ISRs */
 // When the timer triggers, make J-turn
-ISR (TIMER1_COMPA_vect)
-{
+ISR (TIMER1_COMPA_vect) {
 	binary_led(2);
 	avoidance_move();
 }
 
+ISR (TIMER2_COMPA_vect) {
+	linehit_counter = 0;
+}
+
 ISR(PCINT0_vect) {
 	while(!(PINB & (1 << PB1))) {
+		cli();
 		set_motors(0,0);
-		binary_led(1);
-		_delay_ms(50);
-		binary_led(4);
-		_delay_ms(50);
-		}
+	}
 }
 
 ISR (INT0_vect) {
-	linehit_counter++;
-	if(linehit_counter == 4) {
-		binary_led(7);
-		set_heading(-(FULL_SPEED),0);
-		_delay_ms(STATE_5);
-		full_turn();
-	} else {
+	if(PINB & (1 << PB1)){
+		linehit_counter++;
+		if(linehit_counter == 4) {
+			binary_led(7);
+			set_heading(-(FULL_SPEED),0);
+			_delay_ms(STATE_3);
+			full_turn();
+		} else {
 
-		binary_led(1);
-		set_heading(-(FULL_SPEED),0);
-		_delay_ms(STATE_5);
-		set_heading(0,FULL_SPEED+FULL_SPEED);
-		_delay_ms(STATE_2);
+			binary_led(1);
+			set_heading(-(FULL_SPEED),0);
+			_delay_ms(STATE_3);
+			set_heading(0,FULL_SPEED+FULL_SPEED);
+			_delay_ms(STATE_2);
+		}
+	} else {
+		set_motors(0,0);
 	}
 }
 
 ISR (INT1_vect) {
-	linehit_counter++;
-	binary_led(7);
-	set_heading(-(FULL_SPEED),0);
-	_delay_ms(STATE_5);
-	set_heading(0,-(FULL_SPEED+FULL_SPEED));
-	_delay_ms(STATE_2);
+	if(PINB & (1 << PB1)){
+		linehit_counter++;
+		if(linehit_counter == 4) {
+			binary_led(7);
+			set_heading(-(FULL_SPEED),0);
+			_delay_ms(STATE_3);
+			full_turn();
+		} else {
+			binary_led(7);
+			set_heading(-(FULL_SPEED),0);
+			_delay_ms(STATE_3);
+			set_heading(0,-(FULL_SPEED+FULL_SPEED));
+			_delay_ms(STATE_2);
+		}
+	} else {
+		set_motors(0,0);
+	}
 }
 
 /*}}}*/
