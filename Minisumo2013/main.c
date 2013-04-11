@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 11 apr 2013 01:14:45
+ * Last Modified : tor 11 apr 2013 02:03:32
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -54,27 +54,46 @@ volatile uint8_t linehit_counter = 0;
 uint8_t find_state(void) {
 	uint8_t state;
 	// Any of the sensors are above ATT_THRESH
-	if(is_within_range(700, ATT_THRESH, ad_value[0]) || is_within_range(700, ATT_THRESH, ad_value[1]))
+	if(is_within_range(700, ATT_THRESH, ad_value[0]) 
+			|| is_within_range(700, ATT_THRESH, ad_value[1]))
+		state = 0;
+	// Left sensor is above NEAR_THRESH and right is below
+	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) 
+			&& !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
 		state = 1;
-	// Both sensors are above NEAR_THRESH
-	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) && is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
+	// Right sensor is above NEAR_THRESH and left is below
+	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) 
+			&& !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
 		state = 2;
+	// Both sensors are above NEAR_THRESH
+	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) 
+			&& is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
+		state = 3;
+	// Left sensor is above FAR_THRESH and right sensor is below
+	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) 
+			&& !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
+		state = 4;
+	// Right sensor is above FAR_THRESH and left sensor is below
+	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1])
+			&& !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]))
+		state = 5;
 	// Both sensors are above FAR_THRESH
 	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
-		state = 3;
+		state = 6;
 	// None of the sensors are above any threshhold
 	else
-		state = 4;
+		state = 7;
 	return state;
 }
 /*}}}*/
 
 /*{{{ Behaviours */
-void stop()  {
+void stop(void)  {
 	while(!(PINB & (1 << PB1))) {
 		cli();
 		set_motors(0,0);
-		for (i = 1; i < 7; i++) {
+		int i;
+		for (i = 0; i < 7; i++) {
 			binary_led(i);
 			_delay_ms(100);
 		}
@@ -93,7 +112,7 @@ void right_turn(void) {
 
 void full_turn(void) {
 	set_motors(-FULL_SPEED,FULL_SPEED);
-	_delay_ms(STATE_4);
+	_delay_ms(STATE_5);
 }
 
 void avoidance_move(void) {
@@ -115,49 +134,42 @@ void search(void) {
 
 void hunt_far_both(void) {
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
-	/*
-	   if(ad_value[0] == ad_value[1])
-	   set_heading(BASE_SPEED, 0);
-	   else if(ad_value[0] > ad_value[1])
-	   set_heading(BASE_SPEED, 40);
-	   else if(ad_value[1] > ad_value[0])
-	   set_heading(BASE_SPEED, -40);
-	   */
+	if(ad_value[0] == ad_value[1])
+		set_heading(BASE_SPEED, 0);
+	else if(ad_value[0] > ad_value[1])
+		set_heading(BASE_SPEED, 40);
+	else if(ad_value[1] > ad_value[0])
+		set_heading(BASE_SPEED, -40);
 }
 
 void hunt_far_left(void) {
-	set_heading(FULL_SPEED, -90);
+	set_heading(FULL_SPEED, -100);
 	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(FULL_SPEED, 90);
+	set_heading(FULL_SPEED, 100);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_left(void) {
-	set_heading(FULL_SPEED, -120);
-	_delay_ms(STATE_DELAY);
+	set_heading(FULL_SPEED, -220);
 }
 
 void hunt_near_right(void) {
-	set_heading(FULL_SPEED, 120);
-	_delay_ms(STATE_DELAY);
+	set_heading(FULL_SPEED, 220);
 }
 
 void hunt_near_both(void) {
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 2);
-	/*
-	   if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
-	   is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
-	   set_heading(FULL_SPEED, 0);
-	   else if(ad_value[0] > ad_value[1])
-	   set_heading(FULL_SPEED, 130);
-	   else if(ad_value[0] > ad_value[1])
-	   set_heading(FULL_SPEED, -130);
-	   _delay_ms(STATE_DELAY);
-	   */
+	if(is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]) ||
+			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
+		set_heading(FULL_SPEED, 0);
+	else if(ad_value[0] > ad_value[1])
+		set_heading(FULL_SPEED, 130);
+	else if(ad_value[0] > ad_value[1])
+		set_heading(FULL_SPEED, -130);
 }
 
 void attack(void) {
@@ -271,13 +283,25 @@ int main(void) {
 				break;
 			case 2:
 				printf("Hunt near left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_both();
+				hunt_near_left();
 				break;
 			case 3:
 				printf("Hunt near right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_far_both();
+				hunt_near_right();
 				break;
 			case 4:
+				printf("Hunt far left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+				hunt_far_left();
+				break;
+			case 5:
+				printf("Hunt far right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+				hunt_far_right();
+				break;
+			case 6:
+				printf("Hunt far both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+				hunt_far_both();
+				break;
+			case 7:
 				printf("Search\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				search();
 				break;
