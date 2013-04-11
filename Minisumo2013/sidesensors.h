@@ -2,7 +2,7 @@
  * File Name : sidesensors.h
  * Purpose : Read the digital sharps at the sides of the robot
  * Creation Date : 26-02-2013
- * Last Modified : tis 26 feb 2013 16:49:05
+ * Last Modified : tor 11 apr 2013 04:30:19
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -12,4 +12,7 @@
 #include <avr/interrupt.h>
 
 void init_sidesensors(void);
+
+uint8_t left_sensor_triggered(void);
+uint8_t right_sensor_triggered(void);
 #endif

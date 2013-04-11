@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 11 apr 2013 04:23:17
+ * Last Modified : tor 11 apr 2013 04:30:51
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -54,7 +54,7 @@ volatile uint8_t linehit_counter = 0;
 uint8_t find_state(void) {
 	uint8_t state;
 	// Any of the sensors are above ATT_THRESH
-	if(is_within_range(700, ATT_THRESH, ad_value[0]) 
+	if(is_within_range(700, ATT_THRESH, ad_value[0])
 			|| is_within_range(700, ATT_THRESH, ad_value[1]))
 		state = 0;
 	// Left sensor is above NEAR_THRESH and right is below
@@ -267,9 +267,9 @@ int main(void) {
 
 	for(;;) {
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
-		if(!(PINB & (1 << PB4)))
+		if(left_sensor_triggered())
 			left_turn();
-		if(!(PINB & (1 << PB5)))
+		if(right_sensor_triggered())
 			right_turn();
 
 		// Decide which state the sensors are in
