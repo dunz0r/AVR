@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 11 apr 2013 02:59:22
+ * Last Modified : tor 11 apr 2013 04:23:17
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -91,6 +91,10 @@ uint8_t find_state(void) {
 void stop(void)  {
 	while(!(PINB & (1 << PB1))) {
 		cli();
+		// "Break"
+		set_motors(-1,-1);
+		_delay_ms(5);
+		// Stop
 		set_motors(0,0);
 		int i;
 		for (i = 0; i < 7; i++) {
@@ -133,7 +137,7 @@ void search(void) {
 }
 
 void hunt_far_both(void) {
-	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 2);
 	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
