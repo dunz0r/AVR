@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 11 apr 2013 02:03:32
+ * Last Modified : tor 11 apr 2013 02:59:22
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -328,7 +328,7 @@ ISR(PCINT0_vect) {
 ISR (INT0_vect) {
 	if(PINB & (1 << PB1)){
 		linehit_counter++;
-		if(linehit_counter == 4) {
+		if(linehit_counter >= 4) {
 			binary_led(7);
 			set_heading(-(FULL_SPEED),0);
 			_delay_ms(STATE_3);
@@ -341,15 +341,13 @@ ISR (INT0_vect) {
 			set_heading(0,FULL_SPEED+FULL_SPEED);
 			_delay_ms(STATE_2);
 		}
-	} else {
-		set_motors(0,0);
 	}
 }
 
 ISR (INT1_vect) {
 	if(PINB & (1 << PB1)){
 		linehit_counter++;
-		if(linehit_counter == 4) {
+		if(linehit_counter >= 4) {
 			binary_led(7);
 			set_heading(-(FULL_SPEED),0);
 			_delay_ms(STATE_3);
@@ -361,8 +359,6 @@ ISR (INT1_vect) {
 			set_heading(0,-(FULL_SPEED+FULL_SPEED));
 			_delay_ms(STATE_2);
 		}
-	} else {
-		set_motors(0,0);
 	}
 }
 
