@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : fre 12 apr 2013 20:57:55
+ * Last Modified : fre 12 apr 2013 21:11:10
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -138,7 +138,7 @@ void search(void) {
 	else
 		set_heading(FULL_SPEED, -20);
 	_delay_ms(STATE_DELAY);
-	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]);
+	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
 }
 
 void hunt_far_both(void) {
@@ -149,6 +149,7 @@ void hunt_far_both(void) {
 		set_heading(BASE_SPEED, 40);
 	else if(ad_value[1] > ad_value[0])
 		set_heading(BASE_SPEED, -40);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_left(void) {
@@ -164,10 +165,12 @@ void hunt_far_right(void) {
 
 void hunt_near_left(void) {
 	set_heading(FULL_SPEED, -220);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_right(void) {
 	set_heading(FULL_SPEED, 220);
+	_delay_ms(STATE_DELAY);
 }
 
 void hunt_near_both(void) {
@@ -179,11 +182,13 @@ void hunt_near_both(void) {
 		set_heading(FULL_SPEED, 130);
 	else if(ad_value[0] > ad_value[1])
 		set_heading(FULL_SPEED, -130);
+	_delay_ms(STATE_DELAY);
 }
 
 void attack(void) {
 	start_timer1();
 	set_heading(FULL_SPEED, 0);
+	_delay_ms(STATE_DELAY);
 }
 /*}}}*/
 
@@ -238,16 +243,10 @@ int main(void) {
 	init_linesensors();
 	// Test 1
 	set_motors(0,0);
-	binary_led(1);
-	_delay_ms(100);
-	binary_led(2);
-	_delay_ms(100);
-	binary_led(3);
-	_delay_ms(100);
-	binary_led(4);
-	_delay_ms(100);
-	binary_led(5);
-	_delay_ms(100);
+	for (int i = 0; i < 7; i++) {
+		binary_led(i);
+		_delay_ms(100);
+	}
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);
