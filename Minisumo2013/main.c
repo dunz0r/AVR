@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : fre 12 apr 2013 21:28:51
+ * Last Modified : fre 12 apr 2013 23:53:30
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -134,9 +134,9 @@ void reverse(void) {
 
 void search(void) {
 	if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 20);
+		set_heading(FULL_SPEED, 40);
 	else
-		set_heading(FULL_SPEED, -20);
+		set_heading(FULL_SPEED, -40);
 	_delay_ms(STATE_DELAY);
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
 }
@@ -146,9 +146,9 @@ void hunt_far_both(void) {
 	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(BASE_SPEED, 40);
+		set_heading(BASE_SPEED, 70);
 	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -40);
+		set_heading(BASE_SPEED, -70);
 	_delay_ms(STATE_DELAY);
 }
 
