@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tor 11 apr 2013 04:30:51
+ * Last Modified : fre 12 apr 2013 20:46:30
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -133,7 +133,10 @@ void reverse(void) {
 }
 
 void search(void) {
-	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]) * 3);
+	if(ad_value[0] > ad_value[1])
+		set_heading(FULL_SPEED, 20);
+	else
+		set_heading(FULL_SPEED, -20);
 }
 
 void hunt_far_both(void) {
