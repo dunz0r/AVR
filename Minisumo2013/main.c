@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 16 apr 2013 23:00:45
+ * Last Modified : tis 16 apr 2013 23:19:29
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -121,9 +121,9 @@ void full_turn(void) {
 
 void avoidance_move(void) {
 	set_motors(-(FULL_SPEED), -(LOW_SPEED));
-	_delay_ms(STATE_3);
+	_delay_ms(STATE_DELAY);
 	set_motors(-(FULL_SPEED), -(FULL_SPEED));
-	_delay_ms(STATE_3);
+	_delay_ms(STATE_DELAY);
 	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
@@ -134,11 +134,10 @@ void reverse(void) {
 
 void search(void) {
 	if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 90);
+		set_heading(FULL_SPEED, 130);
 	else
-		set_heading(FULL_SPEED, -90);
+		set_heading(FULL_SPEED, -130);
 	_delay_ms(STATE_DELAY);
-	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
 }
 
 void hunt_far_both(void) {
@@ -146,20 +145,20 @@ void hunt_far_both(void) {
 	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(BASE_SPEED, 120);
+		set_heading(BASE_SPEED, 200);
 	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -120);
+		set_heading(BASE_SPEED, -100);
 	_delay_ms(STATE_DELAY);
 }
 
 void hunt_far_left(void) {
-	set_heading(FULL_SPEED, -100);
+	set_heading(FULL_SPEED, -180);
 	_delay_ms(STATE_DELAY);
 }
 
 
 void hunt_far_right(void) {
-	set_heading(FULL_SPEED, 100);
+	set_heading(FULL_SPEED, 180);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -281,21 +280,25 @@ int main(void) {
 		// Show state on 3-bit display
 		binary_led(state);
 		// Stop timer1 if we're not attacking
-		if(state != 1)
+		if(state != 0)
 			stop_timer1();
 
 		switch(state) {
-			case 1:
+			case 0:
 				printf("Attack\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				attack();
 				break;
-			case 2:
+			case 1:
 				printf("Hunt near left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				hunt_near_left();
 				break;
-			case 3:
+			case 2:
 				printf("Hunt near right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				hunt_near_right();
+				break;
+			case 3:
+				printf("Hunt near both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
+				hunt_near_both();
 				break;
 			case 4:
 				printf("Hunt far left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
