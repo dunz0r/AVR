@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : fre 12 apr 2013 23:53:30
+ * Last Modified : tis 16 apr 2013 22:57:44
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -121,9 +121,9 @@ void full_turn(void) {
 
 void avoidance_move(void) {
 	set_motors(-(FULL_SPEED), -(LOW_SPEED));
-	_delay_ms(STATE_DELAY);
+	_delay_ms(STATE_3);
 	set_motors(-(FULL_SPEED), -(FULL_SPEED));
-	_delay_ms(STATE_DELAY);
+	_delay_ms(STATE_3);
 	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
@@ -338,19 +338,14 @@ ISR (INT0_vect) {
 		// "Smoothing"
 		_delay_ms(1);
 		if(!(PIND & (1 << PD2))){
+			binary_led(3);
 			linehit_counter++;
+			set_heading(-(FULL_SPEED),0);
+			_delay_ms(STATE_3);
 			if(linehit_counter >= 4) {
-				binary_led(7);
-				set_heading(-(FULL_SPEED),0);
-				_delay_ms(STATE_3);
 				full_turn();
 			} else {
-
-				binary_led(3);
-				set_heading(-(FULL_SPEED),0);
-				_delay_ms(STATE_3);
-				set_heading(0,FULL_SPEED+FULL_SPEED);
-				_delay_ms(STATE_2);
+				left_turn();
 			}
 		}
 	}
@@ -361,18 +356,14 @@ ISR (INT1_vect) {
 		// "Smoothing"
 		_delay_ms(1);
 		if(!(PIND & (1 << PD3))){
+			binary_led(5);
 			linehit_counter++;
+			set_heading(-(FULL_SPEED),0);
+			_delay_ms(STATE_3);
 			if(linehit_counter >= 4) {
-				binary_led(6);
-				set_heading(-(FULL_SPEED),0);
-				_delay_ms(STATE_3);
 				full_turn();
 			} else {
-				binary_led(5);
-				set_heading(-(FULL_SPEED),0);
-				_delay_ms(STATE_3);
-				set_heading(0,-(FULL_SPEED+FULL_SPEED));
-				_delay_ms(STATE_2);
+				right_turn();
 			}
 		}
 	}
