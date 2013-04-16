@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 16 apr 2013 22:57:44
+ * Last Modified : tis 16 apr 2013 23:00:45
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -134,9 +134,9 @@ void reverse(void) {
 
 void search(void) {
 	if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 40);
+		set_heading(FULL_SPEED, 90);
 	else
-		set_heading(FULL_SPEED, -40);
+		set_heading(FULL_SPEED, -90);
 	_delay_ms(STATE_DELAY);
 	set_heading(FULL_SPEED, (ad_value[0] - ad_value[1]));
 }
@@ -146,9 +146,9 @@ void hunt_far_both(void) {
 	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(BASE_SPEED, 70);
+		set_heading(BASE_SPEED, 120);
 	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -70);
+		set_heading(BASE_SPEED, -120);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -179,9 +179,9 @@ void hunt_near_both(void) {
 			is_within_range(ad_value[0]+5, ad_value[0]-5, ad_value[1]))
 		set_heading(FULL_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 130);
+		set_heading(FULL_SPEED, 150);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, -130);
+		set_heading(FULL_SPEED, -150);
 	_delay_ms(STATE_DELAY);
 }
 

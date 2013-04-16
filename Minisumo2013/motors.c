@@ -2,7 +2,7 @@
  * File Name : motors.c
  * Purpose : Control of motors via an L298N H-bridge
  * Creation Date : 2013-01-16
- * Last Modified : lör 23 mar 2013 16:33:02
+ * Last Modified : tis 16 apr 2013 23:01:16
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -10,7 +10,7 @@
 #include "motors.h"
 
 /*{{{ Set heading based on difference between motors and desired speed */
-void set_heading(int16_t speed, uint16_t difference) {
+void set_heading(uint16_t speed, uint16_t difference) {
 	// Set heading, left = speed + diff, right = speed - diff
 	int left = speed + difference;
 	left = constrain(255,-255,left);
