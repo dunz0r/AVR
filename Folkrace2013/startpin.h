@@ -2,7 +2,7 @@
  * File Name : startpin.h
  * Purpose : Startmodule
  * Creation Date : 26-02-2013
- * Last Modified : tor 28 feb 2013 13:36:53
+ * Last Modified : tis 23 apr 2013 20:43:11
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -13,7 +13,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
-#include "leds.h"
 #include "motors.h"
 
 void init_startpin(void);

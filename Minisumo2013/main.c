@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 16 apr 2013 23:19:29
+ * Last Modified : tis 23 apr 2013 21:45:42
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -227,7 +227,6 @@ void perform_strategy(uint8_t strategy) {
 int main(void) {
 
 	// Short startup delay to make sure that the startmodule has initialized
-	_delay_ms(30);
 	// Disable global interrupts during start sequence
 	cli();
 	uint8_t strategy = 1;
@@ -240,12 +239,13 @@ int main(void) {
 	init_timer2();
 	init_startpin();
 	init_linesensors();
-	// Test 1
 	set_motors(0,0);
+	/*
 	for (int i = 0; i < 7; i++) {
 		binary_led(i);
 		_delay_ms(100);
 	}
+	*/
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
 		binary_led(strategy);
