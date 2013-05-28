@@ -2,7 +2,7 @@
  * File Name : sidesensors.c
  * Purpose : Read the digital sharps at the sides of the robot
  * Creation Date : 26-02-2013
- * Last Modified : tor 11 apr 2013 04:30:19
+ * Last Modified : tis 23 apr 2013 22:21:00
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -17,14 +17,14 @@ void init_sidesensors(void) {
 
 uint8_t left_sensor_triggered(void) {
 	if(!(PINB & (1 << PB4)))
-		return 1;
-	else
 		return 0;
+	else
+		return 1;
 }
 
 uint8_t right_sensor_triggered(void) {
 	if(!(PINB & (1 << PB5)))
-		return 1;
-	else
 		return 0;
+	else
+		return 1;
 }

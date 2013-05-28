@@ -8,9 +8,9 @@ MCU = atmega328
 AVR_DUDE_TARGET=m328p
 FORMAT = ihex
 TARGET = main
-SRC = $(TARGET).c ./usart.c ./adc.c ./utils.c ./motors.c ./linesensors.c ./startpin.c ./leds.c ./sidesensors.c ./switch.c ./timer.c
+SRC = $(TARGET).c ./usart.c ./adc.c ./utils.c ./motors.c ./linesensors.c ./startpin.c ./sidesensors.c ./switch.c ./timer.c
 ASRC = 
-OPT = s
+OPT = 2
 HZ = 16000000
 
 # Name of this Makefile (used for "make depend").

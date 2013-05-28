@@ -2,7 +2,7 @@
  * File Name : adc.h
  * Purpose : Header for the adc stuff
  * Creation Date : 2013-01-08
- * Last Modified : sön 10 feb 2013 22:42:40
+ * Last Modified : ons 24 apr 2013 20:15:23
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */

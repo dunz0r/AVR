@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : tis 23 apr 2013 21:45:42
+ * Last Modified : ons 24 apr 2013 20:49:20
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -32,7 +32,7 @@
 #include "startpin.h"
 
 // LEDs
-#include "leds.h"
+//#include "leds.h"
 
 // Various utils
 #include "utils.h"
@@ -98,7 +98,7 @@ void stop(void)  {
 		set_motors(0,0);
 		int i;
 		for (i = 0; i < 7; i++) {
-			binary_led(i);
+			//binary_led(i);
 			_delay_ms(100);
 		}
 	}
@@ -234,21 +234,19 @@ int main(void) {
 	init_usart();
 	init_motors();
 	init_sidesensors();
-	init_leds();
+//	init_leds();
 	init_timer1();
 	init_timer2();
 	init_startpin();
 	init_linesensors();
 	set_motors(0,0);
-	/*
 	for (int i = 0; i < 7; i++) {
-		binary_led(i);
+		//binary_led(i);
 		_delay_ms(100);
 	}
-	*/
 	// Wait for startpin to go high
 	while(!(PINB & (1 << PB1))){
-		binary_led(strategy);
+		//binary_led(strategy);
 		set_motors(0,0);
 		// Read the button and cycle through strategys
 		if(switch_is_pressed()){
@@ -270,18 +268,19 @@ int main(void) {
 
 	for(;;) {
 		// If the side sensors trigger and the attack sensors are below ATT_THRESH
-		if(left_sensor_triggered())
-			left_turn();
-		if(right_sensor_triggered())
-			right_turn();
 
 		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
-		binary_led(state);
+		//binary_led(state);
 		// Stop timer1 if we're not attacking
-		if(state != 0)
+		if(state != 0){
 			stop_timer1();
+			if(!(PINB & (1 << PB4)))
+				left_turn();
+			if(!(PINB & (1 << PB5)))
+				right_turn();
+		}
 
 		switch(state) {
 			case 0:
@@ -324,7 +323,7 @@ int main(void) {
 /*{{{ ISRs */
 // When the timer triggers, make J-turn
 ISR (TIMER1_COMPA_vect) {
-	binary_led(2);
+	//binary_led(2);
 	avoidance_move();
 }
 
@@ -341,7 +340,7 @@ ISR (INT0_vect) {
 		// "Smoothing"
 		_delay_ms(1);
 		if(!(PIND & (1 << PD2))){
-			binary_led(3);
+			//binary_led(3);
 			linehit_counter++;
 			set_heading(-(FULL_SPEED),0);
 			_delay_ms(STATE_3);
@@ -359,7 +358,7 @@ ISR (INT1_vect) {
 		// "Smoothing"
 		_delay_ms(1);
 		if(!(PIND & (1 << PD3))){
-			binary_led(5);
+			//binary_led(5);
 			linehit_counter++;
 			set_heading(-(FULL_SPEED),0);
 			_delay_ms(STATE_3);
