@@ -2,7 +2,7 @@
  * File Name : main.c
  * Purpose : test adc
  * Creation Date : 2012-12-30
- * Last Modified : ons 24 apr 2013 20:49:20
+ * Last Modified : fre 19 jul 2013 22:04:40
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
@@ -32,7 +32,7 @@
 #include "startpin.h"
 
 // LEDs
-//#include "leds.h"
+#include "leds.h"
 
 // Various utils
 #include "utils.h"
@@ -98,7 +98,7 @@ void stop(void)  {
 		set_motors(0,0);
 		int i;
 		for (i = 0; i < 7; i++) {
-			//binary_led(i);
+			binary_led(i);
 			_delay_ms(100);
 		}
 	}
@@ -107,16 +107,19 @@ void stop(void)  {
 void left_turn(void) {
 	set_motors(FULL_SPEED,-(FULL_SPEED));
 	_delay_ms(STATE_3);
+	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
 void right_turn(void) {
 	set_motors(-(FULL_SPEED),FULL_SPEED);
 	_delay_ms(STATE_3);
+	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
 void full_turn(void) {
 	set_motors(-FULL_SPEED,FULL_SPEED);
-	_delay_ms(STATE_5);
+	_delay_ms(STATE_4);
+	set_motors(FULL_SPEED, FULL_SPEED);
 }
 
 void avoidance_move(void) {
@@ -134,9 +137,9 @@ void reverse(void) {
 
 void search(void) {
 	if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 130);
+		set_heading(FULL_SPEED, 150);
 	else
-		set_heading(FULL_SPEED, -130);
+		set_heading(FULL_SPEED, -150);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -145,9 +148,9 @@ void hunt_far_both(void) {
 	if(ad_value[0] == ad_value[1])
 		set_heading(BASE_SPEED, 0);
 	else if(ad_value[0] > ad_value[1])
-		set_heading(BASE_SPEED, 200);
+		set_heading(FULL_SPEED, 130);
 	else if(ad_value[1] > ad_value[0])
-		set_heading(BASE_SPEED, -100);
+		set_heading(FULL_SPEED, -130);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -234,14 +237,14 @@ int main(void) {
 	init_usart();
 	init_motors();
 	init_sidesensors();
-//	init_leds();
+	init_leds();
 	init_timer1();
 	init_timer2();
 	init_startpin();
 	init_linesensors();
 	set_motors(0,0);
 	for (int i = 0; i < 7; i++) {
-		//binary_led(i);
+		binary_led(i);
 		_delay_ms(100);
 	}
 	// Wait for startpin to go high
@@ -272,7 +275,7 @@ int main(void) {
 		// Decide which state the sensors are in
 		uint8_t state = find_state();
 		// Show state on 3-bit display
-		//binary_led(state);
+		binary_led(state);
 		// Stop timer1 if we're not attacking
 		if(state != 0){
 			stop_timer1();
@@ -323,7 +326,7 @@ int main(void) {
 /*{{{ ISRs */
 // When the timer triggers, make J-turn
 ISR (TIMER1_COMPA_vect) {
-	//binary_led(2);
+	binary_led(2);
 	avoidance_move();
 }
 
@@ -340,9 +343,9 @@ ISR (INT0_vect) {
 		// "Smoothing"
 		_delay_ms(1);
 		if(!(PIND & (1 << PD2))){
-			//binary_led(3);
+			binary_led(3);
 			linehit_counter++;
-			set_heading(-(FULL_SPEED),0);
+			set_motors(-255,-255);
 			_delay_ms(STATE_3);
 			if(linehit_counter >= 4) {
 				full_turn();
@@ -358,9 +361,9 @@ ISR (INT1_vect) {
 		// "Smoothing"
 		_delay_ms(1);
 		if(!(PIND & (1 << PD3))){
-			//binary_led(5);
+			binary_led(5);
 			linehit_counter++;
-			set_heading(-(FULL_SPEED),0);
+			set_motors(-255,-255);
 			_delay_ms(STATE_3);
 			if(linehit_counter >= 4) {
 				full_turn();
