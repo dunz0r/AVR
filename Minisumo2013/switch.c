@@ -2,7 +2,7 @@
  * File Name : switch.c
  * Purpose : Read a switch
  * Creation Date : 18-03-2013
- * Last Modified : mån 18 mar 2013 17:57:26
+ * Last Modified : sön  7 sep 2014 20:36:55
  * Created By : Gabriel Fornaeus, <gf@hax0r.se>
  *
  */
