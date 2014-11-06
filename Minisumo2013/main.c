@@ -57,32 +57,12 @@ uint8_t find_state(void) {
 	if(is_within_range(700, ATT_THRESH, ad_value[0])
 			|| is_within_range(700, ATT_THRESH, ad_value[1]))
 		state = 0;
-	// Left sensor is above NEAR_THRESH and right is below
-	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) 
-			&& !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
-		state = 1;
-	// Right sensor is above NEAR_THRESH and left is below
-	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) 
-			&& !is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
-		state = 2;
-	// Both sensors are above NEAR_THRESH
-	else if(is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[0]) 
-			&& is_within_range(ATT_THRESH, NEAR_THRESH, ad_value[1]))
-		state = 3;
-	// Left sensor is above FAR_THRESH and right sensor is below
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) 
-			&& !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
-		state = 4;
-	// Right sensor is above FAR_THRESH and left sensor is below
-	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1])
-			&& !is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]))
-		state = 5;
 	// Both sensors are above FAR_THRESH
 	else if(is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[0]) && is_within_range(NEAR_THRESH, FAR_THRESH, ad_value[1]))
-		state = 6;
+		state = 1;
 	// None of the sensors are above any threshhold
 	else
-		state = 7;
+		state = 2;
 	return state;
 }
 /*}}}*/
@@ -137,9 +117,9 @@ void reverse(void) {
 
 void search(void) {
 	if(ad_value[0] > ad_value[1])
-		set_heading(FULL_SPEED, 150);
+		set_heading(FULL_SPEED, 180);
 	else
-		set_heading(FULL_SPEED, -150);
+		set_heading(FULL_SPEED, -180);
 	_delay_ms(STATE_DELAY);
 }
 
@@ -184,6 +164,12 @@ void hunt_near_both(void) {
 		set_heading(FULL_SPEED, 150);
 	else if(ad_value[0] > ad_value[1])
 		set_heading(FULL_SPEED, -150);
+	_delay_ms(STATE_DELAY);
+}
+
+void hunt(void) {
+	int8_t ad_diff = ad_value[0] - ad_value[1];
+	set_heading(FULL_SPEED, (ad_diff * 2));
 	_delay_ms(STATE_DELAY);
 }
 
@@ -240,7 +226,7 @@ int main(void) {
 	init_leds();
 	init_timer1();
 	init_timer2();
-	init_startpin();
+//	init_startpin();
 	init_linesensors();
 	set_motors(0,0);
 	for (int i = 0; i < 7; i++) {
@@ -248,6 +234,7 @@ int main(void) {
 		_delay_ms(100);
 	}
 	// Wait for startpin to go high
+	/*
 	while(!(PINB & (1 << PB1))){
 		//binary_led(strategy);
 		set_motors(0,0);
@@ -259,6 +246,7 @@ int main(void) {
 			_delay_ms(250);
 		}
 	}
+	*/
 
 	// Enable global interrupts
 	sei();
@@ -292,30 +280,10 @@ int main(void) {
 				break;
 			case 1:
 				printf("Hunt near left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_left();
+				hunt();
 				break;
 			case 2:
 				printf("Hunt near right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_right();
-				break;
-			case 3:
-				printf("Hunt near both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_near_both();
-				break;
-			case 4:
-				printf("Hunt far left\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_far_left();
-				break;
-			case 5:
-				printf("Hunt far right\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_far_right();
-				break;
-			case 6:
-				printf("Hunt far both\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
-				hunt_far_both();
-				break;
-			case 7:
-				printf("Search\t0: %i 1: %i\n", ad_value[0], ad_value[1]);
 				search();
 				break;
 		}
@@ -334,44 +302,24 @@ ISR (TIMER2_COMPA_vect) {
 	linehit_counter = 0;
 }
 
+/*
 ISR(PCINT0_vect) {
 	stop();
 }
+*/
 
 ISR (INT0_vect) {
-	if(PINB & (1 << PB1)){
-		// "Smoothing"
-		_delay_ms(1);
-		if(!(PIND & (1 << PD2))){
-			binary_led(3);
-			linehit_counter++;
-			set_motors(-255,-255);
-			_delay_ms(STATE_3);
-			if(linehit_counter >= 4) {
-				full_turn();
-			} else {
-				left_turn();
-			}
-		}
-	}
+	binary_led(3);
+	set_motors(-255,-255);
+	_delay_ms(STATE_4);
+	left_turn();
 }
 
 ISR (INT1_vect) {
-	if(PINB & (1 << PB1)){
-		// "Smoothing"
-		_delay_ms(1);
-		if(!(PIND & (1 << PD3))){
-			binary_led(5);
-			linehit_counter++;
-			set_motors(-255,-255);
-			_delay_ms(STATE_3);
-			if(linehit_counter >= 4) {
-				full_turn();
-			} else {
-				right_turn();
-			}
-		}
-	}
+	binary_led(5);
+	set_motors(-255,-255);
+	_delay_ms(STATE_4);
+	right_turn();
 }
 
 /*}}}*/
